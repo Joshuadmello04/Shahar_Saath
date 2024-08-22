@@ -1,60 +1,35 @@
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import React from 'react';
 import { router } from "expo-router";
+import { styled } from 'nativewind';
+import { Button, Card } from 'react-native-paper';
+import { Provider as PaperProvider } from 'react-native-paper';
 
 export default function Login() {
+  const StyledView = styled(View)
+  const StyledCard = styled(Card)
+  const StyledInput = styled(TextInput)
+  const StyledText = styled(Text)
+  const StyledButtom = styled(Button)
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1 }}
-    >
-      <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        keyboardShouldPersistTaps="handled"
-      >
-        <View style={styles.innerContainer}>
-          <View style={styles.card}>
-            <View style={styles.logoContainer}>
-                <View style={styles.circle}>
-                    <Text style={{ color: '#ffff' }}>Logo</Text>
-                </View>
-            </View>
-            <View style={styles.formContainer}>
-              {/* Input Field for Username */}
-              <TextInput 
-                style={styles.input}
-                placeholder="Username"
-                placeholderTextColor="#888"
-              />
-              {/* Input Field for Password */}
-              <TextInput 
-                style={styles.input}
-                placeholder="Password"
-                placeholderTextColor="#888"
-                secureTextEntry
-              />
-              {/* Signup Link */}
-              <TouchableOpacity 
-                style={styles.link} 
-                activeOpacity={0.7} 
-                onPress={() => router.push('/sign-up')}
-              >
-                <Text style={styles.linkText}>New User? Sign Up</Text>
-              </TouchableOpacity>
-              {/* Login Button */}
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity 
-                  style={styles.button} 
-                  activeOpacity={0.7}
-                >
-                  <Text style={styles.buttonText}>Login</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+    <PaperProvider
+    settings={{
+      rippleEffectEnabled: false
+    }}>
+    <StyledView className='flex-1 justify-center items-center bg-white'>
+      <StyledCard className='w-[300] h-[400] pt-[30] bg-slate-100'>
+        <Card.Actions className='flex-col'>
+          <StyledView className="w-[100] h-[100] rounded-full bg-black items-center justify-center mb-5">
+            <StyledText className='font-bold  text-white text-sm text-center'>Shahar Saath</StyledText>
+          </StyledView>
+          <StyledInput className='mb-5 pl-2 text-black bg-white w-60 h-8 rounded-md border-black border-2' mode='outlined' label='Name' placeholder="Enter Name" placeholderTextColor={'black'} />
+          <StyledInput className='mb-5 pl-2 text-black bg-white w-60 h-8 rounded-md border-black border-2' mode='outlined' label='Password' secureTextEntry placeholder="Enter Pasword" placeholderTextColor={'black'}/>
+          <Button className='' mode='text' textColor='black'  onPress={()=> router.push('/sign-up')}>New User? Sign Up</Button>
+          <Button className='bg-black w-40 h-11 mt-5' mode='elevated' textColor='#ffff'>Login</Button>
+        </Card.Actions>
+      </StyledCard>
+    </StyledView>
+    </PaperProvider>
   );
 }
 

@@ -1,58 +1,26 @@
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import React from 'react';
-
+import { styled } from 'nativewind';
+import { Button, Card } from 'react-native-paper';
 export default function Signup() {
+  const StyledView = styled(View)
+  const StyledCard = styled(Card)
+  const StyledInput = styled(TextInput)
+  const StyledText = styled(Text)
+  const StyledButtom = styled(Button)
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1 }}
-    >
-      <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        keyboardShouldPersistTaps="handled"
-      >
-        <View style={styles.container}>
-          <View style={styles.card}>
-            <View style={styles.formContainer}>
-              {/* Input Field for Name */}
-              <TextInput 
-                style={styles.input}
-                placeholder="Name"
-                placeholderTextColor="#888"
-              />
-              {/* Input Field for Email */}
-              <TextInput 
-                style={styles.input}
-                placeholder="Email"
-                placeholderTextColor="#888"
-              />
-              {/* Input Field for Password */}
-              <TextInput 
-                style={styles.input}
-                placeholder="Password"
-                placeholderTextColor="#888"
-                secureTextEntry
-              />
-              {/* Input Field for Confirm Password */}
-              <TextInput 
-                style={styles.input}
-                placeholder="Confirm Password"
-                placeholderTextColor="#888"
-                secureTextEntry
-              />
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity 
-                  style={styles.button} 
-                  activeOpacity={0.7}
-                >
-                  <Text style={styles.buttonText}>Sign Up</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+    <StyledView className='flex-1 justify-center items-center bg-white'>
+      <StyledCard className='w-[300] h-[400] pt-[60] bg-slate-100'>
+        <Card.Actions className='flex-col'>
+          
+          <StyledInput className='mb-5 pl-2 text-black bg-white w-60 h-8 rounded-md border-black border-2' mode='outlined' label='Name' placeholder="Enter Name" placeholderTextColor={'black'} />
+          <StyledInput className='mb-5 pl-2 text-black bg-white w-60 h-8 rounded-md border-black border-2' mode='outlined' label='Email' placeholder="Enter Email" placeholderTextColor={'black'}/>
+          <StyledInput className='mb-5 pl-2 text-black bg-white w-60 h-8 rounded-md border-black border-2' mode='outlined' label='Password' secureTextEntry placeholder="Enter Pasword" placeholderTextColor={'black'}/>
+          <StyledInput className='mb-5 pl-2 text-black bg-white w-60 h-8 rounded-md border-black border-2' mode='outlined' label='Password' secureTextEntry placeholder="Confirm Password" placeholderTextColor={'black'} />
+          <Button className='bg-black w-40 h-10 mt-5' mode='elevated' textColor='#ffff'>SignUp</Button>
+        </Card.Actions>
+      </StyledCard>
+    </StyledView>
   );
 }
 
