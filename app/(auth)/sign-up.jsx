@@ -24,7 +24,7 @@ export default function Signup() {
               <StyledButton className="" mode="text" textColor="white" rippleColor="#075985" onPress={() => router.push('/login')}>
                 Already have an account? <StyledText className="font-black text-cyan-300">Login</StyledText>
               </StyledButton>
-              <StyledButton className="w-40 h-15 mt-5" mode="elevated" buttonColor='#0891b2' textColor="#ffff">SignUp</StyledButton>
+              <StyledButton className="w-40 h-15 mt-5" mode="elevated" buttonColor='#0891b2' textColor="#ffff" onPress={() => router.push('/home')}>SignUp</StyledButton>
             </StyledView>
           </StyledLinearGradient>
         </StyledLinearGradient>
