@@ -6,7 +6,7 @@ export default function RootLayout() {
       headerShown: false,}}>
       <Stack.Screen name="index" />
       <Stack.Screen name="(auth)" />
-      <Stack.Screen name="(tab)" />
+      <Stack.Screen name='(tab)' />
     </Stack>
   );
 }

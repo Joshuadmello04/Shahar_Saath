@@ -1,31 +1,61 @@
-import { View } from 'react-native'
-import React from 'react'
-import { BottomNavigation, Text } from 'react-native-paper';
-import Home from './home'
+import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Home from './home';
 import Profile from './profile';
+import Course from './course';
 
-export default function _layout() {
-    const [index, setIndex] = React.useState(0);
-    const [routes] = React.useState([
-    { key: 'home', title: 'Home', focusedIcon: 'home', unfocusedIcon: 'home-outline'},
-    { key: 'profile', title: 'Profile', focusedIcon: 'account', unfocusedIcon: 'account-outline'},
+const Tab = createMaterialBottomTabNavigator();
 
-  ]);
-    
-    const renderScene = BottomNavigation.SceneMap({
-        home: Home,
-        profile: Profile
-      });
+export default function TabLayout() {
   return (
-    <BottomNavigation
-      navigationState={{ index, routes }}
-      onIndexChange={setIndex}
-      renderScene={renderScene}
-      activeColor='#0051ff'
-      inactiveColor="#000000"
-      barStyle={{ backgroundColor: '#54bbff'}}
+    <Tab.Navigator
+      initialRouteName="Home"
+      activeColor="#0051ff"
+      barStyle={{ backgroundColor: '#54bbff' }}
       theme={{colors: {secondaryContainer: '#54bbff'}}}
-
-    />
-  )
+    >
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons
+              name={focused ? 'home' : 'home-outline'}
+              color={color}
+              size={30}
+            />
+          ),
+        }}
+      />
+       <Tab.Screen 
+      name='Course'
+      component={Course}
+      options={{
+         tabBarLabel: 'Courses',
+         tabBarIcon: ({ color, focused }) => (
+          <MaterialCommunityIcons
+            name={focused ? 'book-open-variant' : 'book-open-page-variant'} 
+            color={color}
+            size={30}
+          />
+        ),
+      }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons
+              name={focused ? 'account' : 'account-outline'}
+              color={color}
+              size={30}
+            />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
 }
