@@ -1,4 +1,4 @@
-import { View, Text, FlatList} from 'react-native';
+import { View, Text, FlatList, Linking, Alert } from 'react-native';
 import React from 'react';
 import { styled } from 'nativewind';
 import { Card } from 'react-native-paper';
@@ -8,33 +8,32 @@ const videoTypes = [
   {
     type: 'Type 1',
     videos: [
-      { id: '1', title: 'Video 1', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c&pp=ygUMcmVhY3QgbmF0aXZl' },
-      { id: '2', title: 'Video 2', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c&pp=ygUMcmVhY3QgbmF0aXZl' },
-      { id: '3', title: 'Video 3', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c&pp=ygUMcmVhY3QgbmF0aXZl' },
-      { id: '4', title: 'Video 4', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c&pp=ygUMcmVhY3QgbmF0aXZl' },
-      { id: '5', title: 'Video 5', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c&pp=ygUMcmVhY3QgbmF0aXZl' },
-      { id: '6', title: 'Video 6', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c&pp=ygUMcmVhY3QgbmF0aXZl' },
-
+      { id: '1', title: 'Video 1', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
+      { id: '2', title: 'Video 2', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
+      { id: '3', title: 'Video 3', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
+      { id: '4', title: 'Video 4', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
+      { id: '5', title: 'Video 5', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
+      { id: '6', title: 'Video 6', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
     ],
   },
   {
     type: 'Type 2',
     videos: [
-      { id: '7', title: 'Video 7', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c&pp=ygUMcmVhY3QgbmF0aXZl' },
-      { id: '8', title: 'Video 8', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c&pp=ygUMcmVhY3QgbmF0aXZl' },
-      { id: '9', title: 'Video 9', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c&pp=ygUMcmVhY3QgbmF0aXZl' },
-      { id: '10', title: 'Video 10', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c&pp=ygUMcmVhY3QgbmF0aXZl' },
-      { id: '11', title: 'Video 11', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c&pp=ygUMcmVhY3QgbmF0aXZl' },
+      { id: '7', title: 'Video 7', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
+      { id: '8', title: 'Video 8', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
+      { id: '9', title: 'Video 9', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
+      { id: '10', title: 'Video 10', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
+      { id: '11', title: 'Video 11', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
     ],
   },
   {
     type: 'Type 3',
     videos: [
-      { id: '12', title: 'Video 12', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c&pp=ygUMcmVhY3QgbmF0aXZl' },
-      { id: '13', title: 'Video 13', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c&pp=ygUMcmVhY3QgbmF0aXZl' },
-      { id: '14', title: 'Video 14', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c&pp=ygUMcmVhY3QgbmF0aXZl' },
-      { id: '15', title: 'Video 15', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c&pp=ygUMcmVhY3QgbmF0aXZl' },
-      { id: '16', title: 'Video 16', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c&pp=ygUMcmVhY3QgbmF0aXZl' },
+      { id: '12', title: 'Video 12', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
+      { id: '13', title: 'Video 13', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
+      { id: '14', title: 'Video 14', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
+      { id: '15', title: 'Video 15', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
+      { id: '16', title: 'Video 16', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
     ],
   },
 ];
@@ -43,8 +42,26 @@ export default function Course() {
   const StyledText = styled(Text);
   const StyledView = styled(View);
 
+  const handlePress = async (url) => {
+    const videoId = url.split('v=')[1].split('&')[0]; // Extract video ID from the URL
+    const youtubeAppUrl = `vnd.youtube:${videoId}`; // YouTube app URL scheme
+    const youtubeWebUrl = url; // Fallback web URL
+
+    try {
+      // Check if the YouTube app can be opened
+      const supported = await Linking.canOpenURL(youtubeAppUrl);
+      if (supported) {
+        await Linking.openURL(youtubeAppUrl);
+      } else {
+        await Linking.openURL(youtubeWebUrl); // Fallback to web URL
+      }
+    } catch (error) {
+      console.error('Failed to open video:', error);
+    }
+  };
+
   const renderVideos = ({ item }) => (
-    <Card style={{ margin: 10, width: 200}}>
+    <Card style={{ margin: 10, width: 200 }} onPress={() => handlePress(item.url)}>
       <Card.Cover source={{ uri: item.thumbnail }} />
       <Card.Content>
         <StyledText className='font-bold text-lg'>{item.title}</StyledText>
@@ -59,7 +76,7 @@ export default function Course() {
         data={item.videos}
         renderItem={renderVideos}
         keyExtractor={(video) => video.id}
-        horizontal // Scroll horizontally for videos
+        horizontal
         contentContainerStyle={{ paddingVertical: 10 }}
       />
     </StyledView>

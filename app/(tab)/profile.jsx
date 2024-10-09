@@ -15,44 +15,10 @@ import Header from "../../components/Header";
 import * as ImagePicker from "expo-image-picker";
 
 export default function Profile() {
-  const [isEditing, setIsEditing] = useState(false); // To toggle between input and text
-  const [phoneNumber, setPhoneNumber] = useState(""); // Stores the phone number
   const [imageUri, setImageUri] = useState(null); // Stores the URI of the selected profile picture
 
   const StyledText = styled(Text);
   const StyledView = styled(View);
-  const StyledTextInput = styled(TextInput);
-
-  // Phone number validation function using regex
-  const validatePhoneNumber = (number) => {
-    const phoneRegex = /^[0-9-\s]*$/; // Only allows digits, spaces, and dashes
-    return phoneRegex.test(number);
-  };
-
-  const handlePhoneNumberChange = (number) => {
-    // Directly set the number without validation for now
-    setPhoneNumber(number);
-  };
-
-  const toggleEdit = () => {
-    if (isEditing) {
-      // Only validate when stopping edit mode
-      if (phoneNumber === "") {
-        Alert.alert("Phone number cannot be empty");
-        return;
-      } else if (!validatePhoneNumber(phoneNumber)) {
-        Alert.alert(
-          "Invalid input",
-          "Only digits, spaces, and dashes are allowed."
-        );
-        return;
-      }
-    }
-    setIsEditing(!isEditing);
-    if (!isEditing) {
-      Keyboard.dismiss(); // Dismiss keyboard when editing is done
-    }
-  };
 
   // Function to handle picking or taking a new profile picture
   const pickImage = async () => {
@@ -82,15 +48,6 @@ export default function Profile() {
   return (
     <>
       <Header />
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
-        keyboardVerticalOffset={100} // Adjust for iOS keyboard
-      >
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
-          keyboardShouldPersistTaps="always" // Keep the keyboard active
-        >
           <StyledView className="flex-1 items-center justify-center p-2 mb-16 bg-white">
               <StyledView className="mb-11 items-center">
                 <Avatar.Image
@@ -100,18 +57,18 @@ export default function Profile() {
                     imageUri
                       ? { uri: imageUri }
                       : { uri: "https://www.example.com/your-dp-url" }
-                  } // Display selected dp or default dp
+                  } 
                 />
                 <IconButton
-                  icon="camera" // You can use any icon from the icon set
-                  size={25} // Set the size of the icon
-                  onPress={pickImage} // Use the same function to change the picture
+                  icon="camera"
+                  size={25} 
+                  onPress={pickImage} 
                   style={{
                     position: "absolute",
-                    bottom: 5, // Adjust this value for vertical positioning
-                    right: -2, // Adjust this value for horizontal positioning
-                    backgroundColor: "white", // Optional: add a background for better visibility
-                    borderRadius: 15, // Optional: make it circular
+                    bottom: 5, 
+                    right: -2, 
+                    backgroundColor: "white",
+                    borderRadius: 15,
                   }}
                 />
               </StyledView>
@@ -125,8 +82,7 @@ export default function Profile() {
               <StyledText className="text-md">(+91) 1111111111</StyledText>
             </StyledView>
           </StyledView>
-        </ScrollView>
-      </KeyboardAvoidingView>
+
     </>
   );
 }
