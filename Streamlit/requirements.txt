@@ -2,3 +2,9 @@ streamlit~=1.32.2
 google-generativeai
 python-dotenv~=1.0.1
 pillow~=10.2.0
+fastapi~=0.103.1
+uvicorn~=0.23.1
+aiofiles~=23.2.1
+python-multipart~=0.0.6
+requests~=2.31.0
+pydantic~=2.4.0
