@@ -7,7 +7,7 @@ export default class Header extends Component {
     const _handleMore = () => console.log('Shown more');
 
     return (
-      <SafeAreaView style={{ flex: 0 }} edges={['top', 'right', 'left']}>
+      <SafeAreaView style={{ flex: 0, backgroundColor: 'black' }} edges={['top', 'right', 'left']}>
         <Appbar.Header
           mode="center-aligned"
           style={{

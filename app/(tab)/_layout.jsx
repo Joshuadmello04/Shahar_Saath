@@ -3,6 +3,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Home from './home';
 import Profile from './profile';
 import Course from './course';
+import Chat from './chat'
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -28,7 +29,7 @@ export default function TabLayout() {
           ),
         }}
       />
-       <Tab.Screen 
+      <Tab.Screen 
       name='Course'
       component={Course}
       options={{
@@ -36,6 +37,20 @@ export default function TabLayout() {
          tabBarIcon: ({ color, focused }) => (
           <MaterialCommunityIcons
             name={focused ? 'book-open-variant' : 'book-open-page-variant'} 
+            color={color}
+            size={30}
+          />
+        ),
+      }}
+      />
+      <Tab.Screen 
+      name='Chat'
+      component={Chat}
+      options={{
+         tabBarLabel: 'Chats',
+         tabBarIcon: ({ color, focused }) => (
+          <MaterialCommunityIcons
+            name={focused ? 'chat' : 'chat-outline'} 
             color={color}
             size={30}
           />
