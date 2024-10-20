@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
 import { styled } from 'nativewind';
 import { router } from "expo-router";
+import { Alert } from 'react-native';
 
 const StyledView = styled(View);
 const StyledInput = styled(TextInput);
@@ -17,6 +18,49 @@ const SignupForm = () => {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  const handleSignUp = async () => {
+    // Validation before sending data to the backend
+    if (!name || !email || !phone || !password || !confirmPassword) {
+      Alert.alert("Error", "Please fill all fields");
+      return;
+    }
+    if (password !== confirmPassword) {
+      Alert.alert("Error", "Passwords do not match");
+      return;
+    }
+
+    // Send data to the backend
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          password,
+          confirmPassword
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // If the sign-up is successful, navigate to the login page
+        Alert.alert("Success", data.message);
+        router.push('/login');
+      } else {
+        // Handle errors from the backend (e.g., user already exists)
+        Alert.alert("Error", data.message);
+      }
+    } catch (error) {
+      console.error("Sign-up error:", error);
+      Alert.alert("Error", "Something went wrong. Please try again.");
+    }
+  };
 
   return (
     <StyledView className="flex-col p-4 items-center">
@@ -89,7 +133,7 @@ const SignupForm = () => {
         mode="elevated" 
         buttonColor='#0891b2' 
         textColor="#ffff" 
-        onPress={() => console.log("Sign Up")}
+        onPress={handleSignUp}
       >
         Sign Up
       </StyledButton>

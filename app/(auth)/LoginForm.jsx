@@ -5,6 +5,8 @@ import { styled } from 'nativewind';
 import { Button, TextInput, Text } from 'react-native-paper';
 import { Image } from 'expo-image';
 import { router } from "expo-router";
+import { Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const StyledView = styled(View);
 const StyledInput = styled(TextInput);
@@ -14,8 +16,39 @@ const StyledImage = styled(Image)
 
 const LoginForm = () => {
   // State variables for input
-  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert("Error", "Please fill in all fields.");
+      return;
+    }
+    
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        await AsyncStorage.setItem('token', data.token);
+        Alert.alert("Success", data.message);
+        // Redirect to home or another page after successful login
+        router.push('/home');
+      } else {
+        Alert.alert("Error", data.message || 'Login failed. Please check your credentials.');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      Alert.alert("Error", "An error occurred. Please try again later.");
+    }
+  };
 
   return (
     <StyledView className='flex-1 justify-center items-center'>
@@ -25,12 +58,12 @@ const LoginForm = () => {
       <StyledInput 
         className='mb-5 text-black bg-white w-60 h-8' 
         mode='outlined' 
-        label='Name' 
-        placeholder="Enter Name" 
+        label='Email' 
+        placeholder="Enter Email" 
         placeholderTextColor={'black'} 
         activeOutlineColor='#0e7490'
-        value={name}
-        onChangeText={setName} // Update name state
+        value={email}
+        onChangeText={setEmail} // Update name state
       />
       <StyledInput 
         className='mb-5 text-black bg-white w-60 h-8' 
@@ -58,7 +91,7 @@ const LoginForm = () => {
         mode='elevated' 
         buttonColor='#0891b2' 
         textColor='#ffff' 
-        onPress={() => router.push('/home')}
+        onPress={handleLogin}
       >
         Login
       </StyledButton>
