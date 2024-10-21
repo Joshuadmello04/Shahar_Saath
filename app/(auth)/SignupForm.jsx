@@ -29,10 +29,10 @@ const SignupForm = () => {
       Alert.alert("Error", "Passwords do not match");
       return;
     }
-
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
     // Send data to the backend
     try {
-      const response = await fetch('http://localhost:5000/api/auth/signup', {
+      const response = await fetch(`${apiUrl}/api/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

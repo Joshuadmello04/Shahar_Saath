@@ -24,9 +24,9 @@ const LoginForm = () => {
       Alert.alert("Error", "Please fill in all fields.");
       return;
     }
-    
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch(`${apiUrl}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ const LoginForm = () => {
         Alert.alert("Error", data.message || 'Login failed. Please check your credentials.');
       }
     } catch (error) {
-      console.error('Error during login:', error);
+      console.error('Error during login:', error.message);
       Alert.alert("Error", "An error occurred. Please try again later.");
     }
   };

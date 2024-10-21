@@ -23,8 +23,9 @@ export default function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       const token = await AsyncStorage.getItem('token'); // Retrieve JWT from storage
+      const apiUrl = process.env.EXPO_PUBLIC_API_URL;
       try {
-        const response = await fetch("http://localhost:5000/api/profile", {
+        const response = await fetch(`${apiUrl}/api/profile`, {
           headers: {
             Authorization: `Bearer ${token}`, // Send JWT token in header
           },
@@ -76,16 +77,16 @@ export default function Profile() {
 
   const updateProfileImage = async (uri) => {
     const token = await AsyncStorage.getItem('token'); // Retrieve JWT from storage
-
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
     const formData = new FormData();
     formData.append('profileImage', {
       uri: uri,
       type: 'image/jpeg', // Update with the appropriate MIME type if needed
       name: 'profile.jpg', // Update with the desired name
     });
-
+    
     try {
-      const response = await fetch("http://localhost:5000/api/profile", {
+      const response = await fetch(`${apiUrl}/api/profile`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
