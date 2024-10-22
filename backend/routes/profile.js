@@ -2,6 +2,7 @@ const express = require('express');
 const User = require('../models/User');
 const router = express.Router();
 const { authMiddleware } = require('../middleware/auth'); // Optional: Auth middleware if you want to protect the route
+const upload = require('../middleware/upload');
 
 // GET /api/profile - Get user profile
 router.get('/', authMiddleware, async (req, res) => {
@@ -18,13 +19,18 @@ router.get('/', authMiddleware, async (req, res) => {
 });
 
 // PUT /api/profile - Update profile image only
-router.put('/', authMiddleware, async (req, res) => {
-  const { profileImage } = req.body; // Get the image from request body
-
+router.put('/', authMiddleware, upload.single('profileImage'), async (req, res) => {
   try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
+
+    // Get the uploaded file's URL (relative path to the image)
+    const profileImageUrl = `/uploads/${req.file.filename}`;
+
     const updatedUser = await User.findByIdAndUpdate(
       req.user.id,
-      { profileImage }, // Update only the profile image
+      { profileImage: profileImageUrl }, // Update only the profile image
       { new: true, runValidators: true }
     ).select('-password');
 

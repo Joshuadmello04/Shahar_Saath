@@ -78,13 +78,14 @@ export default function Profile() {
   const updateProfileImage = async (uri) => {
     const token = await AsyncStorage.getItem('token'); // Retrieve JWT from storage
     const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+  
     const formData = new FormData();
     formData.append('profileImage', {
-      uri: uri,
-      type: 'image/jpeg', // Update with the appropriate MIME type if needed
-      name: 'profile.jpg', // Update with the desired name
+      uri,
+      type: 'image/jpeg', // Update if you allow different types
+      name: 'profile.jpg',
     });
-    
+  
     try {
       const response = await fetch(`${apiUrl}/api/profile`, {
         method: 'PUT',
@@ -94,16 +95,16 @@ export default function Profile() {
         },
         body: formData,
       });
-
+  
       if (!response.ok) {
-        throw new Error("Failed to update profile image");
+        throw new Error('Failed to update profile image');
       }
-
+  
       const updatedUser = await response.json();
       setUserInfo(updatedUser); // Update local user info state with the updated user data
     } catch (error) {
       console.error(error);
-      Alert.alert("Error", "Failed to update profile image.");
+      Alert.alert('Error', 'Failed to update profile image.');
     }
   };
 
@@ -123,7 +124,7 @@ export default function Profile() {
             source={
               imageUri
                 ? { uri: imageUri }
-                : { uri: userInfo?.profilePicture || "https://www.example.com/your-dp-url" }
+                : { uri: userInfo?.profileImage || "https://www.example.com/your-dp-url" }
             }
           />
           <IconButton

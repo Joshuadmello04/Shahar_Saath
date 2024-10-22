@@ -4,11 +4,15 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 require('dotenv').config(); // Load environment variables
+const path = require('path');
 
 const authRoutes = require('./routes/auth'); // Import routes
 const profileRoutes = require('./routes/profile'); // Import profile routes
 
 const app = express();
+
+// Serve static files from 'uploads' directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Middleware
 app.use(cors());
