@@ -18,6 +18,8 @@ const SignupForm = () => {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleSignUp = async () => {
     // Validation before sending data to the backend
@@ -99,25 +101,37 @@ const SignupForm = () => {
         className="mb-5 text-black bg-white w-60 h-8" 
         mode="outlined" 
         label="Password" 
-        secureTextEntry 
+        secureTextEntry={!showPassword} // Toggle secureTextEntry based on showPassword
         placeholder="Enter Password" 
         placeholderTextColor={'black'} 
         activeOutlineColor="#0e7490" 
         value={password}
         onChangeText={setPassword} // Update password state
-        right={<TextInput.Icon icon="eye" color={'#0ea5e9'}/>} 
+        right={
+          <TextInput.Icon 
+            icon={showPassword ? "eye-off" : "eye"} // Change icon based on visibility
+            color={'#0ea5e9'}
+            onPress={() => setShowPassword(!showPassword)} // Toggle password visibility
+          />
+        } 
       />
       <StyledInput 
         className="mb-5 text-black bg-white w-60 h-8" 
         mode="outlined" 
         label="Confirm Password" 
-        secureTextEntry 
+        secureTextEntry={!showConfirmPassword} // Toggle secureTextEntry based on showConfirmPassword
         placeholder="Confirm Password" 
         placeholderTextColor={'black'} 
         activeOutlineColor="#0e7490" 
         value={confirmPassword}
         onChangeText={setConfirmPassword} // Update confirmPassword state
-        right={<TextInput.Icon icon="eye" color={'#0ea5e9'}/>} 
+        right={
+          <TextInput.Icon 
+            icon={showConfirmPassword ? "eye-off" : "eye"} // Change icon based on visibility
+            color={'#0ea5e9'}
+            onPress={() => setShowConfirmPassword(!showConfirmPassword)} // Toggle confirm password visibility
+          />
+        } 
       />
       <StyledButton 
         className="" 

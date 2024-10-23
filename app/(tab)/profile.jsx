@@ -124,7 +124,8 @@ export default function Profile() {
             source={
               imageUri
                 ? { uri: imageUri }
-                : { uri: userInfo?.profileImage || "https://www.example.com/your-dp-url" }
+                : { uri: userInfo?.profileImage ? `${process.env.EXPO_PUBLIC_API_URL}${userInfo?.profileImage}` : "https://www.example.com/your-dp-url" }
+
             }
           />
           <IconButton

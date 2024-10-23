@@ -18,6 +18,7 @@ const LoginForm = () => {
   // State variables for input
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -69,13 +70,19 @@ const LoginForm = () => {
         className='mb-5 text-black bg-white w-60 h-8' 
         mode='outlined' 
         label='Password' 
-        secureTextEntry 
+        secureTextEntry={!showPassword}
         placeholder="Enter Password" 
         placeholderTextColor={'black'} 
         activeOutlineColor='#0e7490' 
         value={password}
-        onChangeText={setPassword} // Update password state
-        right={<TextInput.Icon icon="eye" color={'#0ea5e9'}/>}
+        onChangeText={setPassword} 
+        right={
+          <TextInput.Icon 
+            icon={showPassword ? "eye-off" : "eye"} 
+            color={'#0ea5e9'}
+            onPress={() => setShowPassword(!showPassword)} 
+          />
+        }
       />
       <StyledButton 
         className='' 

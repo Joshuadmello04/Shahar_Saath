@@ -47,11 +47,13 @@ export default class Header extends Component {
           />
         </Appbar.Header>
         {this.state.menuVisible && (
-          <StyledView className="absolute right-0  bg-white rounded-lg shadow-lg p-2 mt-2 border border-gray-300">
+          <View style={{ position: 'absolute', right: 0, bottom: 0, marginBottom: 50 }}> 
+          <StyledView className="bg-white rounded-lg shadow-lg p-2 border border-gray-300">
             <StyledTouchableOpacity onPress={this.handleLogout}>
               <StyledText className="text-black p-2">Logout</StyledText>
             </StyledTouchableOpacity>
           </StyledView>
+        </View>
         )}
       </SafeAreaView>
     );
