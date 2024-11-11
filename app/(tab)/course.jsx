@@ -6,9 +6,9 @@ import Header from '../../components/Header';
 
 const videoTypes = [
   {
-    type: 'Type 1',
+    type: 'Sewing Videos',
     videos: [
-      { id: '1', title: 'Video 1', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
+      { id: '1', title: 'Video 1', thumbnail: 'https://img.youtube.com/vi/OSv7GwqvDoI/default.jpg', url: 'https://www.youtube.com/watch?v=OSv7GwqvDoI' },
       { id: '2', title: 'Video 2', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
       { id: '3', title: 'Video 3', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
       { id: '4', title: 'Video 4', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
@@ -17,9 +17,9 @@ const videoTypes = [
     ],
   },
   {
-    type: 'Type 2',
+    type: 'Exel Videos',
     videos: [
-      { id: '7', title: 'Video 7', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
+      { id: '7', title: 'Video 7', thumbnail: 'https://img.youtube.com/vi/ynnH3BWcH2w/default.jpg', url: 'https://youtu.be/ynnH3BWcH2w?si=Mf1dYJZSTD4t8_hF' },
       { id: '8', title: 'Video 8', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
       { id: '9', title: 'Video 9', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
       { id: '10', title: 'Video 10', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
@@ -27,9 +27,9 @@ const videoTypes = [
     ],
   },
   {
-    type: 'Type 3',
+    type: 'Purse Making Videos',
     videos: [
-      { id: '12', title: 'Video 12', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
+      { id: '12', title: 'Video 12', thumbnail: 'https://img.youtube.com/vi/kuZ0K1LzLXQ/mqdefault.jpg', url: 'https://youtu.be/kuZ0K1LzLXQ?si=vWcwgTffLjtP5knC' },
       { id: '13', title: 'Video 13', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
       { id: '14', title: 'Video 14', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },
       { id: '15', title: 'Video 15', thumbnail: 'https://img.youtube.com/vi/a_SthPXtV6c/sddefault.jpg', url: 'https://www.youtube.com/watch?v=a_SthPXtV6c' },

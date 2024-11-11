@@ -5,7 +5,9 @@ module.exports = function (api) {
     plugins: ["nativewind/babel"],
     env: {
       production: {
-        plugins: ['react-native-paper/babel'],
+        plugins: ['react-native-paper/babel',
+          'react-native-dotenv', // Add this plugin for dotenv support
+        ],
       },
     },
   };

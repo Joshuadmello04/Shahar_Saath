@@ -5,9 +5,8 @@ import {
   Image,
   ActivityIndicator,
   TextInput,
-  Pressable,
-  ScrollView,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import { styled } from "nativewind";
 import * as ImagePicker from "expo-image-picker";
@@ -23,6 +22,7 @@ export default function Home() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [caption, setCaption] = useState("");
+  const [grievanceType, setGrievanceType] = useState("");
   const [input, setInput] = useState("");
   const [displayedCaption, setDisplayedCaption] = useState("");
   const [error, setError] = useState("");
@@ -52,67 +52,52 @@ export default function Home() {
 
   const submitImage = async () => {
     if (!selectedImage) {
-        setError("Please select an image first.");
-        return;
+      setError("Please select an image first.");
+      return;
     }
-
+  
     setLoading(true);
     const formData = new FormData();
-
-    // Append the image file
     formData.append("file", {
-        uri: selectedImage,
-        name: "photo.jpg",
-        type: "image/jpeg",
+      uri: selectedImage,
+      name: "photo.jpg",
+      type: "image/jpeg",
     });
-
-    // Append the input text, it can be null if the user didn't provide it
-    formData.append("input", input || ""); // Pass an empty string if input is empty
-
-    console.log("FormData being sent:", formData);
-
+  
+    console.log("Sending image to backend...");
     try {
       const response = await axios.post(
-        "http://<insert_your_ipv4>:8000/generate", // Your local server's IP
-        formData,
+        "http://192.168.1.6:8000/generate", // Make sure this URL is correct for your environment
+        formData, 
         {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-            timeout: 30000,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          timeout: 60000, // Increased timeout
         }
-    );
-    
-
-        // Process the response in a separate try-catch block
-        try {
-            if (response.data && response.data.caption) {
-                setCaption(response.data.caption);
-            } else {
-                throw new Error("No caption received from the server.");
-            }
-
-            setError(""); // Clear any previous error messages
-            setInput("");
-            setSelectedImage(null); // Reset selected image to allow a new selection
-        } catch (processError) {
-            console.error("Error processing caption:", processError);
-            setError(processError.message || "An error occurred while processing the caption.");
-        }
+      );
+      console.log("Response received:", response);
+      if (response.data && response.data.grievance_type && response.data.caption) {
+        setGrievanceType(response.data.grievance_type);
+        setCaption(response.data.caption);
+      } else {
+        setError("No grievance type or caption received from the server.");
+      }
     } catch (error) {
-        console.error("Error generating caption:", error);
-        
-        // Differentiate between Axios errors and other errors
-        if (axios.isAxiosError(error)) {
-            setError("Network error or server timeout. Please try again.");
+      console.error("Error generating caption:", error);
+      if (axios.isAxiosError(error)) {
+        if (error.code === 'ECONNABORTED') {
+          setError("Request timed out. Please try again.");
         } else {
-            setError(error.message || "An unexpected error occurred.");
+          setError("Network error or server timeout. Please try again.");
         }
+      } else {
+        setError(error.message || "An unexpected error occurred.");
+      }
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-};
-
+  };
 
   useEffect(() => {
     if (caption) {
@@ -125,7 +110,7 @@ export default function Home() {
         } else {
           clearInterval(interval);
         }
-      }, 50);
+      }, 50); // Adjust typing speed here
       return () => clearInterval(interval);
     }
   }, [caption]);
@@ -141,13 +126,13 @@ export default function Home() {
             </StyledText>
 
             <StyledView className="mt-6">
-              <Pressable
+              <TouchableOpacity
                 onPress={pickImage}
                 className="bg-white rounded-full px-6 py-4 shadow-lg flex-row items-center transform transition-transform hover:scale-105"
               >
                 <AntDesign name="picture" size={24} color="black" />
                 <Text className="ml-3 text-lg font-semibold">Pick an image</Text>
-              </Pressable>
+              </TouchableOpacity>
             </StyledView>
 
             {selectedImage && (
@@ -160,21 +145,7 @@ export default function Home() {
               </StyledView>
             )}
 
-            <StyledView className="mt-6 w-full px-6">
-              <Text className="text-white text-lg">Enter a text prompt:</Text>
-              <TextInput
-                value={input}
-                onChangeText={setInput}
-                placeholder="Give some Context"
-                placeholderTextColor="#D3D3D3"
-                className="border border-gray-400 bg-white/90 rounded-lg p-4 mt-3 w-full"
-                multiline={true}
-                rows={4} 
-                textAlignVertical="top"
-                style={{ maxHeight: 120, fontSize: 16 }}
-                editable={!loading}
-              />
-            </StyledView>
+            {error && <StyledText className="text-red-500 mt-4">{error}</StyledText>}
 
             <TouchableOpacity
               onPress={submitImage}
@@ -186,10 +157,6 @@ export default function Home() {
 
             {loading && <ActivityIndicator size="large" color="#00ff00" className="mt-4" />}
 
-            {error && (
-              <StyledText className="text-red-500 mt-4">{error}</StyledText>
-            )}
-
             {displayedCaption && (
               <StyledView className="mt-6 w-full px-6">
                 <StyledText className="font-bold text-2xl text-white">Generated Caption:</StyledText>
@@ -199,6 +166,13 @@ export default function Home() {
                 >
                   {displayedCaption}
                 </StyledText>
+              </StyledView>
+            )}
+
+            {grievanceType && (
+              <StyledView className="mt-6 w-full px-6">
+                <StyledText className="font-bold text-xl text-white">Grievance Type:</StyledText>
+                <StyledText className="text-white bg-black/30 p-4 rounded-lg mt-2">{grievanceType}</StyledText>
               </StyledView>
             )}
           </StyledView>
