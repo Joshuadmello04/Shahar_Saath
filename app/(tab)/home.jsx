@@ -7,6 +7,8 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Alert,
+  
 } from "react-native";
 import { styled } from "nativewind";
 import * as ImagePicker from "expo-image-picker";
@@ -14,6 +16,7 @@ import axios from "axios";
 import { AntDesign } from "@expo/vector-icons";
 import Header from "../../components/Header";
 import { LinearGradient } from "expo-linear-gradient";
+import AsyncStorage from "@react-native-async-storage/async-storage"; // For JWT
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -67,7 +70,7 @@ export default function Home() {
     console.log("Sending image to backend...");
     try {
       const response = await axios.post(
-        "http://192.168.1.6:8000/generate", // Make sure this URL is correct for your environment
+        "http://192.168.1.15:8000/generate", // Make sure this URL is correct for your environment
         formData, 
         {
           headers: {
@@ -80,6 +83,9 @@ export default function Home() {
       if (response.data && response.data.grievance_type && response.data.caption) {
         setGrievanceType(response.data.grievance_type);
         setCaption(response.data.caption);
+
+        // After successful generation, send data to backend
+        submitGrievance(response.data.grievance_type, response.data.caption);
       } else {
         setError("No grievance type or caption received from the server.");
       }
@@ -96,6 +102,39 @@ export default function Home() {
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const submitGrievance = async (grievanceType, caption) => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      const apiUrl = process.env.EXPO_PUBLIC_API_URL || "http://192.168.1.15:5000";
+
+      const formData = new FormData();
+      formData.append("file", {
+        uri: selectedImage,
+        name: "grievance_image.jpg",
+        type: "image/jpeg",
+      });
+
+      formData.append("title", grievanceType);
+      formData.append("description", caption);
+
+      const response = await axios.post(`${apiUrl}/api/grievances`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data", // Send form data with image
+        },
+      });
+
+      if (response.status === 201) {
+        Alert.alert("Success", "Grievance submitted successfully.");
+      } else {
+        setError("Failed to submit grievance.");
+      }
+    } catch (error) {
+      console.error("Error submitting grievance:", error);
+      setError("An error occurred while submitting the grievance.");
     }
   };
 

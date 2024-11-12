@@ -4,6 +4,7 @@ import Home from './home';
 import Profile from './profile';
 import Course from './course';
 import Chat from './chat'
+import GrievanceTable from './GrievanceTable';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -56,6 +57,20 @@ export default function TabLayout() {
           />
         ),
       }}
+      />
+      <Tab.Screen
+        name="GrievanceTable"
+        component={GrievanceTable}  // Set GrievanceTable as a new tab
+        options={{
+          tabBarLabel: 'Grievances',
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons
+              name={focused ? 'file-document' : 'file-document-outline'}
+              color={color}
+              size={30}
+            />
+          ),
+        }}
       />
       <Tab.Screen
         name="Profile"

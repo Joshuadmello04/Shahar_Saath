@@ -8,11 +8,13 @@ const path = require('path');
 
 const authRoutes = require('./routes/auth'); // Import routes
 const profileRoutes = require('./routes/profile'); // Import profile routes
+const grievanceRoutes = require('./routes/grievance'); // Import grievance routes
+
 
 const app = express();
 
 // Serve static files from 'uploads' directory
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); 
 
 // Middleware
 app.use(cors());
@@ -21,6 +23,7 @@ app.use(bodyParser.json());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/profile', profileRoutes); // Profile routes added
+app.use('/api/grievances', grievanceRoutes); // Grievance routes
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
