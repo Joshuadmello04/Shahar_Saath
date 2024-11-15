@@ -1,20 +1,30 @@
-import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; // Correct import for icons
+
 import Home from './home';
 import Profile from './profile';
 import Course from './course';
-import Chat from './chat'
+import Chat from './chat';
 import GrievanceTable from './GrievanceTable';
 
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function TabLayout() {
   return (
     <Tab.Navigator
       initialRouteName="Home"
-      activeColor="#0051ff"
-      barStyle={{ backgroundColor: '#54bbff' }}
-      theme={{colors: {secondaryContainer: '#54bbff'}}}
+      screenOptions={{
+        headerShown: false, // optional, if you don't want a header
+        tabBarActiveTintColor: '#0051ff', // active icon color
+        tabBarInactiveTintColor: '#00000', // inactive icon color
+        tabBarStyle: {
+          backgroundColor: '#54bbff', // tab bar background color
+          height: 70, // Increase the height of the tab bar
+          paddingBottom: 5, // Optional: To give some extra space at the bottom
+          paddingTop: 5,
+        },
+      }}
     >
       <Tab.Screen
         name="Home"
@@ -30,37 +40,37 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tab.Screen 
-      name='Course'
-      component={Course}
-      options={{
-         tabBarLabel: 'Courses',
-         tabBarIcon: ({ color, focused }) => (
-          <MaterialCommunityIcons
-            name={focused ? 'book-open-variant' : 'book-open-page-variant'} 
-            color={color}
-            size={30}
-          />
-        ),
-      }}
+      <Tab.Screen
+        name="Course"
+        component={Course}
+        options={{
+          tabBarLabel: 'Courses',
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons
+              name={focused ? 'book-open-variant' : 'book-open-page-variant'}
+              color={color}
+              size={30}
+            />
+          ),
+        }}
       />
-      <Tab.Screen 
-      name='Chat'
-      component={Chat}
-      options={{
-         tabBarLabel: 'Chats',
-         tabBarIcon: ({ color, focused }) => (
-          <MaterialCommunityIcons
-            name={focused ? 'chat' : 'chat-outline'} 
-            color={color}
-            size={30}
-          />
-        ),
-      }}
+      <Tab.Screen
+        name="Chat"
+        component={Chat}
+        options={{
+          tabBarLabel: 'Chats',
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons
+              name={focused ? 'chat' : 'chat-outline'}
+              color={color}
+              size={30}
+            />
+          ),
+        }}
       />
       <Tab.Screen
         name="GrievanceTable"
-        component={GrievanceTable}  // Set GrievanceTable as a new tab
+        component={GrievanceTable}
         options={{
           tabBarLabel: 'Grievances',
           tabBarIcon: ({ color, focused }) => (

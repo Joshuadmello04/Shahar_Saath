@@ -116,7 +116,7 @@ export default function Profile() {
   return (
     <>
       <Header />
-      <StyledView className="flex-1 items-center justify-center p-2 mb-16 bg-white">
+      <StyledView className="flex-1 items-center justify-center p-2 bg-white">
         <StyledView className="mb-11 items-center">
           <Avatar.Image
             style={{ backgroundColor: "#f3f4f6" }}

@@ -70,7 +70,7 @@ export default function Home() {
     console.log("Sending image to backend...");
     try {
       const response = await axios.post(
-        "http://192.168.1.6:8000/generate", // Make sure this URL is correct for your environment
+        "http://192.168.1.15:8000/generate", // Make sure this URL is correct for your environment
         formData, 
         {
           headers: {
@@ -108,7 +108,7 @@ export default function Home() {
   const submitGrievance = async (grievanceType, caption) => {
     try {
       const token = await AsyncStorage.getItem("token");
-      const apiUrl = process.env.EXPO_PUBLIC_API_URL || "http://192.168.1.15:5000";
+      const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
       const formData = new FormData();
       formData.append("file", {
