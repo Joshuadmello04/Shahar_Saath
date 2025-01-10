@@ -25,7 +25,7 @@ const LoginForm = () => {
       Alert.alert("Error", "Please fill in all fields.");
       return;
     }
-    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL || "http://192.168.1.6:5000";
     try {
       const response = await fetch(`${apiUrl}/api/auth/login`, {
         method: 'POST',
