@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { router } from "expo-router";
 import { styled } from 'nativewind';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -18,11 +19,15 @@ export default class Header extends Component {
     this.setState((prevState) => ({ menuVisible: !prevState.menuVisible }));
   };
 
-  handleLogout = () => {
-    console.log('User logged out');
-    // Implement your logout functionality here
-    this.toggleMenu(); // Close the menu after logout
-    router.push('/login');
+  handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem('token');  // Clear the stored token
+      console.log('User logged out');
+      this.toggleMenu();  // Close the menu after logout
+      router.replace('/login');  // Navigate back to login screen
+    } catch (error) {
+      console.error('Error clearing token:', error);
+    }
   };
 
   render() {
