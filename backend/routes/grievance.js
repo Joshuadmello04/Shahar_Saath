@@ -7,7 +7,7 @@ const router = express.Router();
 // POST /api/grievance - Create a new grievance
 router.post('/', authMiddleware, upload.single('file'), async (req, res) => {
   try {
-    const { title, description } = req.body;
+    const { title, description,latitude,longitude } = req.body;
     const userId = req.user.id;
 
     // If there's a file, store its path/URL
@@ -18,6 +18,8 @@ router.post('/', authMiddleware, upload.single('file'), async (req, res) => {
       title,
       description,
       file: filePath,
+      latitude,
+      longitude,
     });
 
     await newGrievance.save();

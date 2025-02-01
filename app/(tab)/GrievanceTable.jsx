@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { View, Text, ActivityIndicator, TouchableOpacity, Image, ScrollView, Animated } from 'react-native';
 import axios from 'axios';
 import { AntDesign } from '@expo/vector-icons';
 import { styled } from 'nativewind';
 import Header from "../../components/Header";
 import AsyncStorage from '@react-native-async-storage/async-storage'; // For JWT
+import * as Location from 'expo-location'; // For getting geolocation
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -13,6 +14,8 @@ const GrievanceTable = () => {
   const [grievances, setGrievances] = useState([]); // Store grievances
   const [loading, setLoading] = useState(true); // Show loading indicator while fetching
   const [error, setError] = useState(''); // Store error message
+  const [location, setLocation] = useState(null); // Store the user's location
+  const [fadeAnim] = useState(new Animated.Value(0)); // For animating latitude/longitude
 
   // Fetch grievances from the backend
   const fetchGrievances = async () => {
@@ -40,12 +43,33 @@ const GrievanceTable = () => {
     }
   };
 
-  // Fetch grievances when the component mounts
+  // Function to get the current location of the user
+  const getLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      setError('Permission to access location was denied');
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    setLocation(location.coords); // Set the location (latitude and longitude)
+
+    // Trigger the animation when location is fetched
+    Animated.timing(fadeAnim, {
+      toValue: 1, // Fade in
+      duration: 500, // Duration of the animation
+      useNativeDriver: true,
+    }).start();
+  };
+
+  // Fetch grievances and location on component mount
   useEffect(() => {
     fetchGrievances();
+    getLocation(); // Fetch user's location
   }, []);
 
   console.log("Grievances state:", grievances); // Debugging: log grievances state
+  console.log("User's Location:", location); // Debugging: log user's location
 
   return (
     <>
@@ -67,6 +91,7 @@ const GrievanceTable = () => {
                 <Text className="flex-1 text-white font-bold text-center pr-4">Title</Text>
                 <Text className="flex-2 text-white font-bold text-center px-4">Description</Text>
                 <Text className="flex-1 text-white font-bold text-center pl-4">Image</Text>
+                <Text className="flex-1 text-white font-bold text-center pl-4">Location</Text>
               </View>
 
               {/* Table Rows */}
@@ -90,6 +115,14 @@ const GrievanceTable = () => {
                       style={{ width: 100, height: 100, borderRadius: 8 }}
                       resizeMode="cover"
                     />
+                    <Text className="flex-1 text-center pr-4 border-r border-blue-800 text-white"/>
+
+                    {/* Animated Location Text */}
+                    <Animated.View style={{ opacity: fadeAnim }}>
+                      <Text className="flex-1 text-center pr-4 border-r border-blue-800 text-white">
+                        📍{item.latitude},{item.longitude}
+                      </Text>
+                    </Animated.View>
                   </View>
                 );
               })}
