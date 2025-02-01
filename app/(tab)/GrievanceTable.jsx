@@ -17,7 +17,7 @@ const GrievanceTable = () => {
   // Fetch grievances from the backend
   const fetchGrievances = async () => {
     const token = await AsyncStorage.getItem('token'); // Get JWT from AsyncStorage
-    const apiUrl = process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.15:5000'; // API URL
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL || 'http://172.20.10.14:5000'; // API URL
 
     try {
       const response = await axios.get(`${apiUrl}/api/grievances`, {
@@ -50,30 +50,41 @@ const GrievanceTable = () => {
   return (
     <>
       <Header />
-      <StyledView className="flex-1 p-4">
-        <StyledText className="font-extrabold text-3xl text-center mb-4">Grievance Table</StyledText>
+      <StyledView className="flex-1 p-4 bg-gray-900">
+        <StyledText className="font-extrabold text-3xl text-center mb-4 text-blue-400">
+          Grievance Table
+        </StyledText>
 
         {loading ? (
-          <ActivityIndicator size="large" color="#00ff00" />
+          <ActivityIndicator size="large" color="#3b82f6" />
         ) : error ? (
-          <StyledText className="text-red-500">{error}</StyledText>
+          <StyledText className="text-red-500 text-center">{error}</StyledText>
         ) : (
           <ScrollView horizontal>
-            <View className="border border-gray-300 rounded-lg overflow-hidden">
-              <View className="flex-row bg-blue-500 p-4">
+            <View className="border border-blue-800 rounded-lg overflow-hidden bg-gray-800">
+              {/* Table Header */}
+              <View className="flex-row bg-blue-900 p-4">
                 <Text className="flex-1 text-white font-bold text-center pr-4">Title</Text>
                 <Text className="flex-2 text-white font-bold text-center px-4">Description</Text>
                 <Text className="flex-1 text-white font-bold text-center pl-4">Image</Text>
               </View>
 
+              {/* Table Rows */}
               {grievances.map((item) => {
-                const apiUrl = process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.15:5000';
+                const apiUrl = process.env.EXPO_PUBLIC_API_URL || 'http://172.20.10.14:5000';
                 const imageUrl = `${apiUrl}${item.file}`;
 
                 return (
-                  <View key={item._id} className="flex-row p-4 border-b border-gray-200">
-                    <Text className="flex-1 text-center pr-4 border-r border-gray-300">{item.title}</Text>
-                    <Text className="flex-2 px-4 border-r border-gray-300 flex-wrap text-justify">{item.description}</Text>
+                  <View
+                    key={item._id}
+                    className="flex-row p-4 border-b border-blue-800 bg-gray-700"
+                  >
+                    <Text className="flex-1 text-center pr-4 border-r border-blue-800 text-white">
+                      {item.title}
+                    </Text>
+                    <Text className="flex-2 px-4 border-r border-blue-800 flex-wrap text-justify text-gray-300">
+                      {item.description}
+                    </Text>
                     <Image
                       source={{ uri: imageUrl }}
                       style={{ width: 100, height: 100, borderRadius: 8 }}
@@ -86,12 +97,13 @@ const GrievanceTable = () => {
           </ScrollView>
         )}
 
+        {/* Refresh Button */}
         <TouchableOpacity
           onPress={fetchGrievances}
-          className="bg-blue-500 py-2 px-6 rounded-full mt-6 flex-row items-center justify-center"
+          className="bg-blue-600 py-3 px-6 rounded-full mt-6 flex-row items-center justify-center"
         >
           <AntDesign name="reload1" size={20} color="white" />
-          <Text className="text-white ml-2">Refresh</Text>
+          <Text className="text-white ml-2 font-bold">Refresh</Text>
         </TouchableOpacity>
       </StyledView>
     </>

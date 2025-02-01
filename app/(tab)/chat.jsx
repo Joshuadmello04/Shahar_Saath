@@ -19,7 +19,7 @@ const decodeJWT = (token) => {
   return JSON.parse(jsonPayload);
 };
 
-const apiUrl = process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.15:5000';
+const apiUrl = process.env.EXPO_PUBLIC_API_URL || 'http://172.20.10.14:5000';
 
 export default function Chat() {
   const [message, setMessage] = useState('');
@@ -97,7 +97,6 @@ export default function Chat() {
 
   const toggleUpvote = async (messageId) => {
     try {
-      console.log('Sending messageId:', messageId);
       const token = await AsyncStorage.getItem('token');
       const response = await axios.post(
         `${apiUrl}/api/chat/${messageId}/upvote`,
@@ -120,7 +119,7 @@ export default function Chat() {
   return (
     <>
       <Header />
-      <View className="flex-1 bg-gray-100">
+      <View className="flex-1 bg-[#0e1a2b]">
         <ScrollView
           className="flex-1 p-4"
           ref={scrollViewRef}
@@ -128,49 +127,56 @@ export default function Chat() {
           onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: true })}
         >
           {messages.map((msg, index) => (
-  <View
-    key={index}
-    className={`flex-row items-center my-1 ${msg.userId._id === currentUserId ? 'justify-end' : 'justify-start'}`}
-  >
-    <View
-      className={`max-w-[80%] p-3 rounded-lg ${msg.userId._id === currentUserId ? 'bg-blue-500' : 'bg-gray-300'}`}
-    >
-      <Text className="font-semibold">{msg.userId?.name || 'Unknown'}</Text>
-      <Text className={`${msg.userId._id === currentUserId ? 'text-white' : 'text-black'}`}>{msg.text}</Text>
-      <View className="flex-row items-center mt-1">
-        <TouchableOpacity
-          onPress={msg.userId._id === currentUserId ? null : () => toggleUpvote(msg._id)} // Disable onPress for own messages
-          disabled={msg.userId._id === currentUserId} // Disable the button for own messages
-          className="mr-2"
-        >
-          <Ionicons
-            name="thumbs-up"
-            size={20}
-            color={
-              msg.userId._id === currentUserId
-                ? 'gray' // Gray color for the user's own messages
-                : (msg.upvotes || []).includes(currentUserId) // Fallback to empty array if upvotes is undefined
-                ? 'red' // Red color if the user has upvoted
-                : 'gray' // Gray color if the user hasn't upvoted
-            }
-          />
-        </TouchableOpacity>
-        <Text>{(msg.upvotes || []).length}</Text> 
-      </View>
-    </View>
-  </View>
-))}
+            <View
+              key={index}
+              className={`flex-row items-center my-2 ${msg.userId._id === currentUserId ? 'justify-end' : 'justify-start'}`}
+            >
+              <View
+                className={`max-w-[80%] p-3 rounded-lg ${msg.userId._id === currentUserId ? 'bg-[#2a4d7a]' : 'bg-[#1a2a40]'}`}
+              >
+                <Text className="font-semibold text-[#64b5f6]">{msg.userId?.name || 'Unknown'}</Text>
+                <Text className={`${msg.userId._id === currentUserId ? 'text-white' : 'text-gray-200'}`}>
+                  {msg.text}
+                </Text>
+                <View className="flex-row items-center mt-1">
+                  <TouchableOpacity
+                    onPress={msg.userId._id === currentUserId ? null : () => toggleUpvote(msg._id)} // Disable onPress for own messages
+                    disabled={msg.userId._id === currentUserId} // Disable the button for own messages
+                    className="mr-2"
+                  >
+                    <Ionicons
+                      name="thumbs-up"
+                      size={20}
+                      color={
+                        msg.userId._id === currentUserId
+                          ? 'gray' // Gray color for the user's own messages
+                          : (msg.upvotes || []).includes(currentUserId) // Fallback to empty array if upvotes is undefined
+                          ? '#64b5f6' // Blue color if the user has upvoted
+                          : 'gray' // Gray color if the user hasn't upvoted
+                      }
+                    />
+                  </TouchableOpacity>
+                  <Text className="text-gray-400">{(msg.upvotes || []).length}</Text>
+                </View>
+              </View>
+            </View>
+          ))}
         </ScrollView>
 
-        <View className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-300">
+        {/* Message Input Bar */}
+        <View className="absolute bottom-0 left-0 right-0 bg-[#1a2a40] border-t border-[#2a4d7a]">
           <View className="flex-row items-center p-4">
             <TextInput
-              className="flex-1 p-3 rounded-full bg-gray-200"
+              className="flex-1 p-3 rounded-full bg-[#2a4d7a] text-white placeholder-gray-400"
               placeholder="Type a message..."
+              placeholderTextColor="#888"
               value={message}
               onChangeText={setMessage}
             />
-            <TouchableOpacity onPress={sendMessage} className="ml-3 bg-blue-500 p-3 rounded-full">
+            <TouchableOpacity
+              onPress={sendMessage}
+              className="ml-3 bg-[#64b5f6] p-3 rounded-full"
+            >
               <Ionicons name="send" size={24} color="white" />
             </TouchableOpacity>
           </View>

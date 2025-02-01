@@ -9,25 +9,25 @@ import { styled } from "nativewind";
 import { Avatar, IconButton } from "react-native-paper";
 import Header from "../../components/Header";
 import * as ImagePicker from "expo-image-picker";
-import AsyncStorage from "@react-native-async-storage/async-storage"; // For JWT
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function Profile() {
-  const [imageUri, setImageUri] = useState(null); // Stores the URI of the selected profile picture
-  const [userInfo, setUserInfo] = useState(null); // State for user info
-  const [loading, setLoading] = useState(true); // State for loading
+  const [imageUri, setImageUri] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const StyledText = styled(Text);
   const StyledView = styled(View);
 
-  // Fetch user profile data from backend
   useEffect(() => {
     const fetchProfile = async () => {
-      const token = await AsyncStorage.getItem('token'); // Retrieve JWT from storage
-      const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+      const token = await AsyncStorage.getItem("token");
+      const apiUrl = process.env.EXPO_PUBLIC_API_URL || "http://172.20.10.14:5000";
       try {
         const response = await fetch(`${apiUrl}/api/profile`, {
           headers: {
-            Authorization: `Bearer ${token}`, // Send JWT token in header
+            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -48,7 +48,6 @@ export default function Profile() {
     fetchProfile();
   }, []);
 
-  // Function to handle picking or taking a new profile picture
   const pickImage = async () => {
     const permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -64,68 +63,65 @@ export default function Profile() {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [1, 1], // Make the image square
+      aspect: [1, 1],
       quality: 1,
     });
 
     if (!result.canceled) {
       setImageUri(result.assets[0].uri);
-      // TODO: Send updated image to backend
       await updateProfileImage(result.assets[0].uri);
     }
   };
 
   const updateProfileImage = async (uri) => {
-    const token = await AsyncStorage.getItem('token'); // Retrieve JWT from storage
-    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
-  
+    const token = await AsyncStorage.getItem("token");
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL || "http://172.20.10.14:5000";
+
     const formData = new FormData();
-    formData.append('profileImage', {
+    formData.append("profileImage", {
       uri,
-      type: 'image/jpeg', // Update if you allow different types
-      name: 'profile.jpg',
+      type: "image/jpeg",
+      name: "profile.jpg",
     });
-  
+
     try {
       const response = await fetch(`${apiUrl}/api/profile`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data', // Required for FormData
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
         },
         body: formData,
       });
-  
+
       if (!response.ok) {
-        throw new Error('Failed to update profile image');
+        throw new Error("Failed to update profile image");
       }
-  
+
       const updatedUser = await response.json();
-      setUserInfo(updatedUser); // Update local user info state with the updated user data
+      setUserInfo(updatedUser);
     } catch (error) {
       console.error(error);
-      Alert.alert('Error', 'Failed to update profile image.');
+      Alert.alert("Error", "Failed to update profile image.");
     }
   };
-
 
   if (loading) {
     return <ActivityIndicator size="large" color="#0e7490" />;
   }
 
   return (
-    <>
+    <LinearGradient colors={["#E0F7FA", "#B2EBF2"]} style={{ flex: 1 }}>
       <Header />
-      <StyledView className="flex-1 items-center justify-center p-2 bg-white">
-        <StyledView className="mb-11 items-center">
+      <StyledView className="flex-1 items-center justify-center p-4">
+        <StyledView className="mb-11 items-center relative">
           <Avatar.Image
-            style={{ backgroundColor: "#f3f4f6" }}
-            size={200} // Profile picture size
+            style={{ backgroundColor: "#4FC3F7" }}
+            size={120}
             source={
               imageUri
                 ? { uri: imageUri }
-                : { uri: userInfo?.profileImage ? `${process.env.EXPO_PUBLIC_API_URL}${userInfo?.profileImage}` : "https://www.example.com/your-dp-url" }
-
+                : { uri: userInfo?.profileImage || "https://www.example.com/your-dp-url" }
             }
           />
           <IconButton
@@ -135,24 +131,23 @@ export default function Profile() {
             style={{
               position: "absolute",
               bottom: 5,
-              right: -2,
-              backgroundColor: "white",
+              right: -10,
+              backgroundColor: "#29B6F6",
               borderRadius: 15,
             }}
           />
         </StyledView>
 
-        {/* Display User Info */}
-        <StyledView className="w-[350] h-[50] bg-gray-100 p-3 rounded-xl mb-5 shadow-sm shadow-black">
-          <StyledText className="text-lg">{userInfo?.name || 'John Doe'}</StyledText>
+        <StyledView className="w-full max-w-sm bg-white p-4 rounded-lg mb-4 shadow-md border border-gray-300">
+          <StyledText className="text-lg text-gray-900 text-center font-semibold">{userInfo?.name || "John Doe"}</StyledText>
         </StyledView>
-        <StyledView className="w-[350] h-[50] bg-gray-100 p-3 rounded-xl mb-5 shadow-sm shadow-black">
-          <StyledText className="text-md">{userInfo?.email || 'johndoe@example.com'}</StyledText>
+        <StyledView className="w-full max-w-sm bg-white p-4 rounded-lg mb-4 shadow-md border border-gray-300">
+          <StyledText className="text-md text-gray-600 text-center">{userInfo?.email || "johndoe@example.com"}</StyledText>
         </StyledView>
-        <StyledView className="w-[350] h-[50] bg-gray-100 p-3 rounded-xl mb-5 shadow-sm shadow-black">
-          <StyledText className="text-md">{userInfo?.phone || '(+91) 1111111111'}</StyledText>
+        <StyledView className="w-full max-w-sm bg-white p-4 rounded-lg mb-4 shadow-md border border-gray-300">
+          <StyledText className="text-md text-gray-600 text-center">{userInfo?.phone || "(+91) 1111111111"}</StyledText>
         </StyledView>
       </StyledView>
-    </>
+    </LinearGradient>
   );
 }
