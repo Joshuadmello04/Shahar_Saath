@@ -6,6 +6,7 @@ import { styled } from 'nativewind';
 import Header from "../../components/Header";
 import AsyncStorage from '@react-native-async-storage/async-storage'; // For JWT
 import * as Location from 'expo-location'; // For getting geolocation
+import { router } from "expo-router";
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -17,6 +18,36 @@ const GrievanceTable = () => {
   const [location, setLocation] = useState(null); // Store the user's location
   const [fadeAnim] = useState(new Animated.Value(0)); // For animating latitude/longitude
 
+  const checkAuth = async () => {
+    const token = await AsyncStorage.getItem('token');
+  
+    if (!token) {
+      router.replace('/login');
+      return;
+    }
+  
+    try {
+      const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/auth/validate-token`, {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
+      if (response.status !== 200) {
+        await AsyncStorage.removeItem('token');
+        router.replace('/login');
+      }
+    } catch (error) {
+      console.error('Token validation failed:', error);
+      await AsyncStorage.removeItem('token');
+      router.replace('/login');
+    }
+  };
+  
+  // Run checkAuth on mount
+  useEffect(() => {
+    checkAuth();
+  }, []);
+  
   // Fetch grievances from the backend
   const fetchGrievances = async () => {
     const token = await AsyncStorage.getItem('token'); // Get JWT from AsyncStorage

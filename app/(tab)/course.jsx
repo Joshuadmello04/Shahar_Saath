@@ -1,9 +1,10 @@
 import { View, Text, FlatList, Linking, Alert, ScrollView } from 'react-native';
-import React from 'react';
+import React, {useEffect } from 'react';
 import { styled } from 'nativewind';
 import { Card } from 'react-native-paper';
 import Header from '../../components/Header';
 import { LinearGradient } from 'expo-linear-gradient';
+import { router } from "expo-router";
 
 const videoTypes = [
   {
@@ -33,6 +34,36 @@ export default function Course() {
   const StyledText = styled(Text);
   const StyledView = styled(View);
 
+  const checkAuth = async () => {
+    const token = await AsyncStorage.getItem('token');
+  
+    if (!token) {
+      router.replace('/login');
+      return;
+    }
+  
+    try {
+      const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/auth/validate-token`, {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
+      if (response.status !== 200) {
+        await AsyncStorage.removeItem('token');
+        router.replace('/login');
+      }
+    } catch (error) {
+      console.error('Token validation failed:', error);
+      await AsyncStorage.removeItem('token');
+      router.replace('/login');
+    }
+  };
+  
+  // Run checkAuth on mount
+  useEffect(() => {
+    checkAuth();
+  }, []);
+  
   const handlePress = async (url) => {
     try {
       const supported = await Linking.canOpenURL(url);
@@ -72,7 +103,6 @@ export default function Course() {
   return (
     <LinearGradient colors={['#0F172A', '#1E293B']} style={{ flex: 1 }}>
       <Header />
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 15, paddingVertical: 20 }}>
         <StyledText className='text-center text-2xl font-bold text-blue-400 mb-5'>Educational Courses</StyledText>
         <FlatList
           data={videoTypes}
@@ -80,7 +110,6 @@ export default function Course() {
           keyExtractor={(type) => type.type}
           contentContainerStyle={{ paddingBottom: 50 }}
         />
-      </ScrollView>
     </LinearGradient>
   );
 }

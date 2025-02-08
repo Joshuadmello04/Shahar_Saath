@@ -7,6 +7,22 @@ const jwt = require('jsonwebtoken'); // Import jsonwebtoken
 
 const router = express.Router();
 
+// GET /api/auth/validate-token - Validate JWT token
+router.get('/validate-token', (req, res) => {
+  const token = req.headers['authorization']?.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    return res.status(200).json({ message: 'Token is valid', user: decoded });
+  } catch (error) {
+    return res.status(401).json({ message: 'Token expired or invalid' });
+  }
+});
+
 // POST /api/auth/signup - Register a new user
 router.post('/signup', async (req, res) => {
   const { name, email, phone, password, confirmPassword } = req.body;

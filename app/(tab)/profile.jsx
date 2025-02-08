@@ -11,6 +11,7 @@ import Header from "../../components/Header";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 
 export default function Profile() {
   const [imageUri, setImageUri] = useState(null);
@@ -19,6 +20,37 @@ export default function Profile() {
 
   const StyledText = styled(Text);
   const StyledView = styled(View);
+
+  const checkAuth = async () => {
+    const token = await AsyncStorage.getItem('token');
+  
+    if (!token) {
+      router.replace('/login');
+      return;
+    }
+  
+    try {
+      const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/auth/validate-token`, {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
+      if (response.status !== 200) {
+        await AsyncStorage.removeItem('token');
+        router.replace('/login');
+      }
+    } catch (error) {
+      console.error('Token validation failed:', error);
+      await AsyncStorage.removeItem('token');
+      router.replace('/login');
+    }
+  };
+  
+  // Run checkAuth on mount
+  useEffect(() => {
+    checkAuth();
+  }, []);
+  
 
   useEffect(() => {
     const fetchProfile = async () => {

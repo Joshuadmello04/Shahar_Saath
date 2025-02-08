@@ -5,6 +5,7 @@ import { io } from 'socket.io-client';
 import axios from 'axios';
 import Header from '../../components/Header';
 import AsyncStorage from "@react-native-async-storage/async-storage"; // For JWT
+import { router } from "expo-router";
 
 // JWT decode function
 const decodeJWT = (token) => {
@@ -26,10 +27,33 @@ export default function Chat() {
   const [messages, setMessages] = useState([]);
   const [currentUserId, setCurrentUserId] = useState(null);
   const [userName, setUserName] = useState(null);
+  const [sortByUpvotes, setSortByUpvotes] = useState(false); // State for sorting order
   const scrollViewRef = useRef();
   const socket = useRef(null);
 
   useEffect(() => {
+
+    const checkAuth = async () => {
+      const token = await AsyncStorage.getItem("token");
+
+      if (!token) {
+        router.replace("/login"); // ✅ Redirect to login if no token
+        return;
+      }
+
+      try {
+        const decodedToken = decodeJWT(token);
+        setCurrentUserId(decodedToken.id);
+        setUserName(decodedToken.name);
+      } catch (error) {
+        console.error("Invalid token:", error);
+        await AsyncStorage.removeItem("token");
+        router.replace("/login"); // ✅ Redirect to login if token is invalid
+      }
+    };
+
+    checkAuth();
+
     const fetchCurrentUserId = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
@@ -77,6 +101,11 @@ export default function Chat() {
     };
   }, []);
 
+  // Sort messages based on the selected order
+  const sortedMessages = sortByUpvotes
+    ? [...messages].sort((a, b) => b.upvotes.length - a.upvotes.length) // Sort by upvotes (descending)
+    : [...messages].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)); // Sort by createdAt (ascending)
+
   const sendMessage = async () => {
     if (message.trim()) {
       try {
@@ -120,13 +149,25 @@ export default function Chat() {
     <>
       <Header />
       <View className="flex-1 bg-[#0e1a2b]">
+        {/* Toggle Button for Sorting */}
+        <View className="p-2 bg-[#1a2a40] border-b border-[#2a4d7a]">
+          <TouchableOpacity
+            onPress={() => setSortByUpvotes(!sortByUpvotes)}
+            className="bg-[#64b5f6] p-2 rounded-full"
+          >
+            <Text className="text-white text-center">
+              {sortByUpvotes ? 'Sort by Date' : 'Sort by Upvotes'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
         <ScrollView
           className="flex-1 p-4"
           ref={scrollViewRef}
           contentContainerStyle={{ paddingBottom: 100 }}
           onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: true })}
         >
-          {messages.map((msg, index) => (
+          {sortedMessages.map((msg, index) => (
             <View
               key={index}
               className={`flex-row items-center my-2 ${msg.userId._id === currentUserId ? 'justify-end' : 'justify-start'}`}

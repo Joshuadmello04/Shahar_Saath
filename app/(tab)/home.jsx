@@ -17,6 +17,7 @@ import Header from "../../components/Header";
 import { LinearGradient } from "expo-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Svg, Text as SvgText } from "react-native-svg"; // Importing react-native-svg for overlay
+import { router } from "expo-router";
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -28,6 +29,37 @@ export default function Home() {
   const [grievanceType, setGrievanceType] = useState("");
   const [error, setError] = useState("");
   const [location, setLocation] = useState(null);
+
+  const checkAuth = async () => {
+    const token = await AsyncStorage.getItem('token');
+  
+    if (!token) {
+      router.replace('/login');
+      return;
+    }
+  
+    try {
+      const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/auth/validate-token`, {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
+      if (response.status !== 200) {
+        await AsyncStorage.removeItem('token');
+        router.replace('/login');
+      }
+    } catch (error) {
+      console.error('Token validation failed:', error);
+      await AsyncStorage.removeItem('token');
+      router.replace('/login');
+    }
+  };
+  
+  // Run checkAuth on mount
+  useEffect(() => {
+    checkAuth();
+  }, []);
+  
 
   useEffect(() => {
     getLocation();
