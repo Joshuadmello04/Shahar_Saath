@@ -27,7 +27,6 @@ The **Smart Slum Community App** is a **React Native** mobile application that e
 ### **Backend & AI Models**
 - **FastAPI** (for handling API requests efficiently)
 - **PyTorch** (for ResNet-18 and BLIP models)
-- **YOLO** (for object detection in reported issues)
 - **MongoDB** (for structured data storage)
 - **Node.js & Express** (for server-side functionality)
 
