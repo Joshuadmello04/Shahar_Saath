@@ -14,7 +14,6 @@ The **Smart Slum Community App** is a **React Native** mobile application that e
 - 📍 **Geotagged Reports:** Ensures that reported issues are mapped in real-time for NGOs and government organizations.
 - 🛠️ **Fake Grievance Detection:** Helps maintain authenticity and accountability in reporting.
 - 💬 **Community Chat & Support:** Enables residents to communicate, discuss solutions, and receive NGO updates.
-- 📊 **NGO Dashboard (Web Platform):** Organizations can view real-time slum issues, analyze data, and provide targeted support.
 
 ---
 
