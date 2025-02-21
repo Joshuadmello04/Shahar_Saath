@@ -93,5 +93,8 @@ This project is more than just an app—it’s a movement. By leveraging AI and 
 
 🌟 **Join us in making a difference.** Contribute, fork, or simply spread the word. **#TechForGood**
 
-📩 Contact: [Your Email] | 🌐 [Your Website]
+📩 Contact:
+crce.9886.ce@gmail.com
+crce.9882.ce@gmail.com
+🌐 : https://joshuadmello.vercel.app
 
