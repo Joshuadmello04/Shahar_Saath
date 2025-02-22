@@ -1,37 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, TouchableOpacity, Image, ScrollView, Animated } from 'react-native';
+import { View, Text, ActivityIndicator, TouchableOpacity, Image, ScrollView, Animated, Dimensions } from 'react-native';
 import axios from 'axios';
 import { AntDesign } from '@expo/vector-icons';
 import { styled } from 'nativewind';
 import Header from "../../components/Header";
-import AsyncStorage from '@react-native-async-storage/async-storage'; // For JWT
-import * as Location from 'expo-location'; // For getting geolocation
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Location from 'expo-location';
 import { router } from "expo-router";
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
+const StyledTouchableOpacity = styled(TouchableOpacity);
+const { height } = Dimensions.get('window');
 
 const GrievanceTable = () => {
-  const [grievances, setGrievances] = useState([]); // Store grievances
-  const [loading, setLoading] = useState(true); // Show loading indicator while fetching
-  const [error, setError] = useState(''); // Store error message
-  const [location, setLocation] = useState(null); // Store the user's location
-  const [fadeAnim] = useState(new Animated.Value(0)); // For animating latitude/longitude
+  const [grievances, setGrievances] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [location, setLocation] = useState(null);
+  const [fadeAnim] = useState(new Animated.Value(0));
 
   const checkAuth = async () => {
     const token = await AsyncStorage.getItem('token');
-  
+
     if (!token) {
       router.replace('/login');
       return;
     }
-  
+
     try {
       const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/auth/validate-token`, {
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
       });
-  
+
       if (response.status !== 200) {
         await AsyncStorage.removeItem('token');
         router.replace('/login');
@@ -42,39 +44,35 @@ const GrievanceTable = () => {
       router.replace('/login');
     }
   };
-  
-  // Run checkAuth on mount
+
   useEffect(() => {
     checkAuth();
   }, []);
-  
-  // Fetch grievances from the backend
+
   const fetchGrievances = async () => {
-    const token = await AsyncStorage.getItem('token'); // Get JWT from AsyncStorage
-    const apiUrl = process.env.EXPO_PUBLIC_API_URL || 'http://172.20.10.14:5000'; // API URL
+    const token = await AsyncStorage.getItem('token');
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL || 'http://172.20.10.14:5000';
 
     try {
       const response = await axios.get(`${apiUrl}/api/grievances`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Send JWT token in header
+          Authorization: `Bearer ${token}`,
         },
       });
 
-      // Check if the response is successful
       if (response.status === 200) {
-        setGrievances(response.data); // Update grievances state
+        setGrievances(response.data);
       } else {
         setError('Failed to fetch grievances.');
       }
     } catch (err) {
-      console.error("Error fetching grievances:", err); // Log the error
+      console.error("Error fetching grievances:", err);
       setError('An error occurred while fetching grievances.');
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
-  // Function to get the current location of the user
   const getLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
@@ -83,91 +81,140 @@ const GrievanceTable = () => {
     }
 
     let location = await Location.getCurrentPositionAsync({});
-    setLocation(location.coords); // Set the location (latitude and longitude)
+    setLocation(location.coords);
 
-    // Trigger the animation when location is fetched
     Animated.timing(fadeAnim, {
-      toValue: 1, // Fade in
-      duration: 500, // Duration of the animation
+      toValue: 1,
+      duration: 500,
       useNativeDriver: true,
     }).start();
   };
 
-  // Fetch grievances and location on component mount
   useEffect(() => {
     fetchGrievances();
-    getLocation(); // Fetch user's location
+    getLocation();
   }, []);
 
-  console.log("Grievances state:", grievances); // Debugging: log grievances state
-  console.log("User's Location:", location); // Debugging: log user's location
+  console.log("Grievances state:", grievances);
+  console.log("User's Location:", location);
 
   return (
     <>
       <Header />
-      <StyledView className="flex-1 p-4 bg-gray-900">
-        <StyledText className="font-extrabold text-3xl text-center mb-4 text-blue-400">
-          Grievance Table
-        </StyledText>
+      <StyledView className="flex-1 p-4 bg-[#0A1929]"> {/* Dark blue background */}
+        <View className="mb-6 px-4 py-3 bg-[#0D2139] rounded-2xl shadow-[4px_4px_10px_rgba(0,0,0,0.3),-4px_-4px_10px_rgba(30,64,110,0.2)]">
+          <StyledText className="text-3xl font-extrabold text-center text-[#60A5FA]">
+            Grievance Table
+          </StyledText>
+        </View>
 
         {loading ? (
-          <ActivityIndicator size="large" color="#3b82f6" />
-        ) : error ? (
-          <StyledText className="text-red-500 text-center">{error}</StyledText>
-        ) : (
-          <ScrollView horizontal>
-            <View className="border border-blue-800 rounded-lg overflow-hidden bg-gray-800">
-              {/* Table Header */}
-              <View className="flex-row bg-blue-900 p-4">
-                <Text className="flex-1 text-white font-bold text-center pr-4">Title</Text>
-                <Text className="flex-2 text-white font-bold text-center px-4">Description</Text>
-                <Text className="flex-1 text-white font-bold text-center pl-4">Image</Text>
-                <Text className="flex-1 text-white font-bold text-center pl-4">Location</Text>
-              </View>
-
-              {/* Table Rows */}
-              {grievances.map((item) => {
-                const apiUrl = process.env.EXPO_PUBLIC_API_URL || 'http://172.20.10.14:5000';
-                const imageUrl = `${apiUrl}${item.file}`;
-
-                return (
-                  <View
-                    key={item._id}
-                    className="flex-row p-4 border-b border-blue-800 bg-gray-700"
-                  >
-                    <Text className="flex-1 text-center pr-4 border-r border-blue-800 text-white">
-                      {item.title}
-                    </Text>
-                    <Text className="flex-2 px-4 border-r border-blue-800 flex-wrap text-justify text-gray-300">
-                      {item.description}
-                    </Text>
-                    <Image
-                      source={{ uri: imageUrl }}
-                      style={{ width: 100, height: 100, borderRadius: 8 }}
-                      resizeMode="cover"
-                    />
-                    <Text className="flex-1 text-center pr-4 border-r border-blue-800 text-white"/>
-
-                    {/* Animated Location Text */}
-                    <Animated.View style={{ opacity: fadeAnim }}>
-                      <Text className="flex-1 text-center pr-4 border-r border-blue-800 text-white">
-                        📍{item.latitude},{item.longitude}
-                      </Text>
-                    </Animated.View>
-                  </View>
-                );
-              })}
+          <View className="items-center justify-center flex-1">
+            <View className="p-8 bg-[#0D2139] rounded-2xl shadow-[4px_4px_10px_rgba(0,0,0,0.3),-4px_-4px_10px_rgba(30,64,110,0.2)]">
+              <ActivityIndicator size="large" color="#60A5FA" />
+              <Text className="mt-4 text-[#60A5FA]">Loading grievances...</Text>
             </View>
+          </View>
+        ) : error ? (
+          <View className="p-4 bg-[#1A1C2E] rounded-xl shadow-[4px_4px_10px_rgba(0,0,0,0.3),-4px_-4px_10px_rgba(30,64,110,0.2)]">
+            <StyledText className="text-center text-red-400">{error}</StyledText>
+          </View>
+        ) : (
+          <ScrollView
+            className="flex-1"
+            contentContainerStyle={{ flexGrow: 1 }}
+          >
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={true}
+              className="rounded-xl shadow-[8px_8px_16px_rgba(0,0,0,0.3),-8px_-8px_16px_rgba(30,64,110,0.2)]"
+            >
+              <View className="overflow-hidden rounded-xl bg-[#0D2139]">
+                {/* Table Header */}
+                <View className="flex-row p-4 bg-[#11294A] border-b border-[#1E406E]">
+                  <StyledText className="flex-1 pr-4 font-bold text-center text-[#60A5FA] min-w-[150px]">Title</StyledText>
+                  <StyledText className="px-4 font-bold text-center text-[#60A5FA] min-w-[300px] flex-2">Description</StyledText>
+                  <StyledText className="flex-1 pl-4 font-bold text-center text-[#60A5FA] min-w-[120px]">Image</StyledText>
+                  <StyledText className="flex-1 pl-4 font-bold text-center text-[#60A5FA] min-w-[150px]">Location</StyledText>
+                </View>
+
+                {/* Table Rows */}
+                <ScrollView
+                  className="max-h-[500px]"
+                  showsVerticalScrollIndicator={true}
+                >
+                  {grievances.map((item) => {
+                    const apiUrl = process.env.EXPO_PUBLIC_API_URL || 'http://172.20.10.14:5000';
+                    const imageUrl = `${apiUrl}${item.file}`;
+
+                    return (
+                      <View
+                        key={item._id}
+                        className="flex-row p-4 bg-[#0D2139] border-b border-[#1E406E]"
+                        style={{
+                          shadowColor: '#000',
+                          shadowOffset: { width: 1, height: 1 },
+                          shadowOpacity: 0.2,
+                          shadowRadius: 2,
+                        }}
+                      >
+                        <Text className="flex-1 pr-4 text-center text-[#9BB6DE] border-r border-[#1E406E] min-w-[150px]">
+                          {item.title}
+                        </Text>
+                        <Text className="flex-wrap px-4 text-justify text-[#9BB6DE] border-r border-[#1E406E] min-w-[300px] flex-2">
+                          {item.description}
+                        </Text>
+                        <View className="flex-1 items-center border-r border-[#1E406E] min-w-[120px]">
+                          <View className="p-1 bg-[#0D2139] rounded-xl shadow-[4px_4px_8px_rgba(0,0,0,0.3),-4px_-4px_8px_rgba(30,64,110,0.2)]">
+                            <Image
+                              source={{ uri: imageUrl }}
+                              style={{
+                                width: 100,
+                                height: 100,
+                                borderRadius: 10,
+                              }}
+                              resizeMode="cover"
+                            />
+                          </View>
+                        </View>
+                        <Animated.View
+                          style={{ opacity: fadeAnim }}
+                          className="flex-1 min-w-[150px]"
+                        >
+                          <Text className="pr-4 text-center text-[#9BB6DE]">
+                            📍{item.latitude},{item.longitude}
+                          </Text>
+                        </Animated.View>
+                      </View>
+                    );
+                  })}
+                </ScrollView>
+              </View>
+            </ScrollView>
           </ScrollView>
         )}
 
-        {/* Refresh Button */}
+        {/* Neumorphic Refresh Button */}
         <TouchableOpacity
           onPress={fetchGrievances}
-          className="bg-blue-600 py-3 px-6 rounded-full mt-6 flex-row items-center justify-center"
+          className="flex-row items-center justify-center px-6 py-4 mt-6 bg-[#11294A] rounded-xl"
+          style={{
+            shadowColor: '#000',
+            shadowOffset: { width: 4, height: 4 },
+            shadowOpacity: 0.3,
+            shadowRadius: 8,
+            elevation: 5,
+          }}
         >
-          <AntDesign name="reload1" size={20} color="white" />
-          <Text className="text-white ml-2 font-bold">Refresh</Text>
+          <View className="absolute inset-0 rounded-xl" style={{
+            backgroundColor: '#0D2139',
+            shadowColor: '#1E406E',
+            shadowOffset: { width: -4, height: -4 },
+            shadowOpacity: 0.4,
+            shadowRadius: 8,
+          }} />
+          <AntDesign name="reload1" size={24} color="#60A5FA" />
+          <StyledText className="ml-3 font-bold text-[#60A5FA] text-lg">Refresh</StyledText>
         </TouchableOpacity>
       </StyledView>
     </>

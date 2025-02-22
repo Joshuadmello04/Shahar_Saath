@@ -145,8 +145,8 @@ export default function Profile() {
   return (
     <LinearGradient colors={["#E0F7FA", "#B2EBF2"]} style={{ flex: 1 }}>
       <Header />
-      <StyledView className="flex-1 items-center justify-center p-4">
-        <StyledView className="mb-11 items-center relative">
+      <StyledView className="items-center justify-center flex-1 p-4">
+        <StyledView className="relative items-center mb-11">
           <Avatar.Image
             style={{ backgroundColor: "#4FC3F7" }}
             size={120}
@@ -170,14 +170,14 @@ export default function Profile() {
           />
         </StyledView>
 
-        <StyledView className="w-full max-w-sm bg-white p-4 rounded-lg mb-4 shadow-md border border-gray-300">
-          <StyledText className="text-lg text-gray-900 text-center font-semibold">{userInfo?.name || "John Doe"}</StyledText>
+        <StyledView className="w-full max-w-sm p-4 mb-4 bg-white border border-gray-300 rounded-lg shadow-md">
+          <StyledText className="text-lg font-semibold text-center text-gray-900">{userInfo?.name || "John Doe"}</StyledText>
         </StyledView>
-        <StyledView className="w-full max-w-sm bg-white p-4 rounded-lg mb-4 shadow-md border border-gray-300">
-          <StyledText className="text-md text-gray-600 text-center">{userInfo?.email || "johndoe@example.com"}</StyledText>
+        <StyledView className="w-full max-w-sm p-4 mb-4 bg-white border border-gray-300 rounded-lg shadow-md">
+          <StyledText className="text-center text-gray-600 text-md">{userInfo?.email || "johndoe@example.com"}</StyledText>
         </StyledView>
-        <StyledView className="w-full max-w-sm bg-white p-4 rounded-lg mb-4 shadow-md border border-gray-300">
-          <StyledText className="text-md text-gray-600 text-center">{userInfo?.phone || "(+91) 1111111111"}</StyledText>
+        <StyledView className="w-full max-w-sm p-4 mb-4 bg-white border border-gray-300 rounded-lg shadow-md">
+          <StyledText className="text-center text-gray-600 text-md">{userInfo?.phone || "(+91) 1111111111"}</StyledText>
         </StyledView>
       </StyledView>
     </LinearGradient>
