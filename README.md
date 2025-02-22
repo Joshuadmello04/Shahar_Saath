@@ -1,50 +1,99 @@
-# Welcome to your Expo app 👋
+# Smart Slum Community App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## 🚀 Vision & Purpose
 
-## Get started
+In a world where urban expansion often sidelines the needs of marginalized communities, technology must bridge the gap. The **Smart Slum Community App** is built for and with slum residents, empowering them to report issues, communicate with NGOs, and bring real-world impact through AI-driven solutions.
 
-1. Install dependencies
+## 🌍 What This App Does
 
-   ```bash
-   npm install
-   ```
+The **Smart Slum Community App** is a **React Native** mobile application that enables slum dwellers to:
 
-2. Start the app
+- 📸 **Report Grievances:** Upload images of problems (e.g., water shortages, sanitation issues, disasters).
+- 🔍 **AI-Powered Issue Classification:** Uses a **ResNet-18** model to classify issues into categories such as **Water, Sanitation, Communal, or Disaster**.
+- 📝 **Automated Captioning:** Generates issue descriptions using **BLIP (Bootstrapping Language-Image Pretraining)**, making reports comprehensive and understandable.
+- 📍 **Geotagged Reports:** Ensures that reported issues are mapped in real-time for NGOs and government organizations.
+- 🛠️ **Fake Grievance Detection:** Helps maintain authenticity and accountability in reporting.
+- 💬 **Community Chat & Support:** Enables residents to communicate, discuss solutions, and receive NGO updates.
 
-   ```bash
-    npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## 🏗️ Tech Stack
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### **Frontend (Mobile App)**
+- **React Native**
+- **Expo** (for seamless development and testing)
+- **Tailwind CSS** (for styling)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### **Backend & AI Models**
+- **FastAPI** (for handling API requests efficiently)
+- **PyTorch** (for ResNet-18 and BLIP models)
+- **MongoDB** (for structured data storage)
+- **Node.js & Express** (for server-side functionality)
 
-## Get a fresh project
+---
 
-When you're ready, run:
+## 🛠️ Setup & Installation
 
-```bash
-npm run reset-project
+### **1️⃣ Clone the Repository**
+```sh
+  git clone https://github.com/yourusername/smart-slum-app.git
+  cd smart-slum-app
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### **2️⃣ Install Dependencies**
+```sh
+  npm install  # Install React Native dependencies
+```
 
-## Learn more
+### **3️⃣ Start the Expo Development Server**
+```sh
+  npx expo start
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+### **4️⃣ Set Up Backend (FastAPI & AI Models)**
+1. Navigate to the backend folder:
+```sh
+  cd backend
+```
+2. Install dependencies:
+```sh
+  pip install -r requirements.txt
+```
+3. Run the FastAPI server:
+```sh
+  uvicorn app:app --reload
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### **5️⃣ Start the Node.js Server**
+1. Navigate to the backend folder:
+```sh
+  cd backend
+```
+2. Install dependencies:
+```sh
+  npm install
+```
+3. Run the server:
+```sh
+  node server.js
+```
 
-## Join the community
+---
 
-Join our community of developers creating universal apps.
+## 🌟 Contributing
+We believe in **open-source for social good**. If you’d like to contribute:
+1. Fork the repo
+2. Create a feature branch (`feature-new-enhancement`)
+3. Push changes and submit a PR
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+---
+## 🏆 Why This Matters
+This project is more than just an app—it’s a movement. By leveraging AI and community-driven reporting, we bridge the gap between slum residents and the organizations that can help them. Every issue reported and resolved brings us closer to sustainable urban development.
+
+🌟 **Join us in making a difference.** Contribute, fork, or simply spread the word. **#TechForGood**
+
+📩 Contact:
+crce.9886.ce@gmail.com
+crce.9882.ce@gmail.com
+🌐 : https://joshuadmello.vercel.app
+
