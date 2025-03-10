@@ -18,7 +18,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize BLIP and ResNet50 models
+# Initialize BLIP models
 blip_processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
 blip_model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base")
 
@@ -32,7 +32,7 @@ try:
     # Load the model weights (ensure the correct path and device mapping)
     resnet50_model.load_state_dict(torch.load("slum_issue_classifier_resnet50.pth", map_location=torch.device("cpu")))
     resnet50_model.eval()  # Set the model to evaluation mode
-    print("Model loaded successfully.")
+    print("Model Final Layer loaded successfully.")
 except FileNotFoundError:
     raise Exception("Model file not found. Ensure the model is in the correct path.")
 
@@ -59,7 +59,7 @@ def classify_grievance(image: Image):
     with torch.no_grad():
         outputs = resnet50_model(image_tensor)
     _, predicted_class = torch.max(outputs, 1)
-    return class_names[predicted_class.item()]  # Return the grievance type (class name)
+    return class_names[predicted_class.item()]  # Return the grievance type (class name) and stored
 
 # Function to generate caption using BLIP model
 def generate_caption(image: Image):
@@ -67,7 +67,7 @@ def generate_caption(image: Image):
     inputs = blip_processor(images=image, return_tensors="pt")
     out = blip_model.generate(**inputs)
     caption = blip_processor.decode(out[0], skip_special_tokens=True)
-    return caption
+    return caption #store caption
 
 # FastAPI endpoint to generate grievance classification and caption
 @app.post("/generate")
@@ -85,5 +85,5 @@ async def generate_caption_and_classify(file: UploadFile = File(...)):
     grievance_type = classify_grievance(image)
     caption = generate_caption(image)
 
-    return {"grievance_type": grievance_type, "caption": caption}
+    return {"grievance_type": grievance_type, "caption": caption} #api content..custom made
 

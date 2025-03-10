@@ -178,23 +178,23 @@ export default function Home() {
       <Header />
       <LinearGradient colors={["#0f172a", "#1e293b", "#334155"]} style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
-          <StyledView className="flex-1 items-center justify-center p-4">
-            <StyledText className="font-extrabold text-4xl text-white tracking-wider mb-6">
+          <StyledView className="items-center justify-center flex-1 p-4">
+            <StyledText className="mb-6 text-4xl font-extrabold tracking-wider text-white">
               Smart Captioner
             </StyledText>
 
             <TouchableOpacity
               onPress={pickImage}
-              className="bg-blue-600 rounded-full px-6 py-4 flex-row items-center shadow-lg active:scale-95"
+              className="flex-row items-center px-6 py-4 bg-blue-600 rounded-full shadow-lg active:scale-95"
             >
               <AntDesign name="picture" size={24} color="white" />
               <Text className="ml-3 text-lg font-semibold text-white">Pick an Image</Text>
             </TouchableOpacity>
 
             {selectedImage && (
-              <StyledView className="mt-6 relative">
+              <StyledView className="relative mt-6">
                 {/* Display the image */}
-                <Image source={{ uri: selectedImage }} className="rounded-lg shadow-lg w-64 h-64" resizeMode="cover" />
+                <Image source={{ uri: selectedImage }} className="w-64 h-64 rounded-lg shadow-lg" resizeMode="cover" />
                 {/* Overlay location on the image */}
                 {location && (
                   <Svg height="100%" width="100%" style={{ position: "absolute", top: 10, left: 10 }}>
@@ -214,14 +214,14 @@ export default function Home() {
               </StyledView>
             )}
 
-            {error && <StyledText className="text-red-500 mt-4 text-center">{error}</StyledText>}
+            {error && <StyledText className="mt-4 text-center text-red-500">{error}</StyledText>}
 
             <TouchableOpacity
               onPress={submitImage}
               disabled={loading}
               className={`mt-6 bg-green-600 rounded-full px-6 py-4 w-full ${loading ? "opacity-50" : "opacity-100"}`}
             >
-              <Text className="text-center text-white text-lg font-semibold">
+              <Text className="text-lg font-semibold text-center text-white">
                 {loading ? "Generating..." : "Generate Caption"}
               </Text>
             </TouchableOpacity>
@@ -229,28 +229,28 @@ export default function Home() {
             {loading && <ActivityIndicator size="large" color="#00ff00" className="mt-4" />}
 
             {caption && (
-              <StyledView className="mt-6 w-full px-6">
-                <StyledText className="font-bold text-2xl text-white mb-2">Generated Caption:</StyledText>
-                <StyledText className="text-white bg-white/20 p-4 rounded-lg text-lg leading-relaxed">
+              <StyledView className="w-full px-6 mt-6">
+                <StyledText className="mb-2 text-2xl font-bold text-white">Generated Caption:</StyledText>
+                <StyledText className="p-4 text-lg leading-relaxed text-white rounded-lg bg-white/20">
                   {caption}
                 </StyledText>
               </StyledView>
             )}
 
             {grievanceType && (
-              <StyledView className="mt-6 w-full px-6">
-                <StyledText className="font-bold text-xl text-white mb-2">Grievance Type:</StyledText>
-                <StyledText className="text-white bg-white/20 p-4 rounded-lg text-lg">
+              <StyledView className="w-full px-6 mt-6">
+                <StyledText className="mb-2 text-xl font-bold text-white">Grievance Type:</StyledText>
+                <StyledText className="p-4 text-lg text-white rounded-lg bg-white/20">
                   {grievanceType}
                 </StyledText>
               </StyledView>
             )}
 
             {location && (
-              <StyledView className="mt-6 w-full px-6">
-                <StyledText className="font-bold text-xl text-white mb-2">Location:</StyledText>
-                <StyledView className="bg-white/20 p-4 rounded-lg">
-                  <StyledText className="text-white text-lg">
+              <StyledView className="w-full px-6 mt-6">
+                <StyledText className="mb-2 text-xl font-bold text-white">Location:</StyledText>
+                <StyledView className="p-4 rounded-lg bg-white/20">
+                  <StyledText className="text-lg text-white">
                     📍 Lat: {location.latitude}, Lng: {location.longitude}
                   </StyledText>
                 </StyledView>

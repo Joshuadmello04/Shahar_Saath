@@ -37,7 +37,7 @@ export default function Chat() {
       const token = await AsyncStorage.getItem("token");
 
       if (!token) {
-        router.replace("/login"); // ✅ Redirect to login if no token
+        router.replace("/login"); // ✅ Redirect to login if no token..token expires
         return;
       }
 
@@ -155,7 +155,7 @@ export default function Chat() {
             onPress={() => setSortByUpvotes(!sortByUpvotes)}
             className="bg-[#64b5f6] p-2 rounded-full"
           >
-            <Text className="text-white text-center">
+            <Text className="text-center text-white">
               {sortByUpvotes ? 'Sort by Date' : 'Sort by Upvotes'}
             </Text>
           </TouchableOpacity>

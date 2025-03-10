@@ -101,7 +101,7 @@ const GrievanceTable = () => {
   return (
     <>
       <Header />
-      <StyledView className="flex-1 p-4 bg-[#0A1929]"> {/* Dark blue background */}
+      <StyledView className="flex-1 p-4 bg-[#0A1929]"> 
         <View className="mb-6 px-4 py-3 bg-[#0D2139] rounded-2xl shadow-[4px_4px_10px_rgba(0,0,0,0.3),-4px_-4px_10px_rgba(30,64,110,0.2)]">
           <StyledText className="text-3xl font-extrabold text-center text-[#60A5FA]">
             Grievance Table
@@ -130,7 +130,6 @@ const GrievanceTable = () => {
               className="rounded-xl shadow-[8px_8px_16px_rgba(0,0,0,0.3),-8px_-8px_16px_rgba(30,64,110,0.2)]"
             >
               <View className="overflow-hidden rounded-xl bg-[#0D2139]">
-                {/* Table Header */}
                 <View className="flex-row p-4 bg-[#11294A] border-b border-[#1E406E]">
                   <StyledText className="flex-1 pr-4 font-bold text-center text-[#60A5FA] min-w-[150px]">Title</StyledText>
                   <StyledText className="px-4 font-bold text-center text-[#60A5FA] min-w-[300px] flex-2">Description</StyledText>
@@ -138,7 +137,6 @@ const GrievanceTable = () => {
                   <StyledText className="flex-1 pl-4 font-bold text-center text-[#60A5FA] min-w-[150px]">Location</StyledText>
                 </View>
 
-                {/* Table Rows */}
                 <ScrollView
                   className="max-h-[500px]"
                   showsVerticalScrollIndicator={true}
@@ -194,7 +192,6 @@ const GrievanceTable = () => {
           </ScrollView>
         )}
 
-        {/* Neumorphic Refresh Button */}
         <TouchableOpacity
           onPress={fetchGrievances}
           className="flex-row items-center justify-center px-6 py-4 mt-6 bg-[#11294A] rounded-xl"
