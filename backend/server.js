@@ -31,7 +31,7 @@ app.use(bodyParser.json());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/profile', profileRoutes); // Profile routes added
-app.use('/api/grievances', grievanceRoutes); // Grievance routes
+app.use('/api/grievance', grievanceRoutes); // Grievance routes
 app.use('/api/chat', chatRoutes); // Chat routes
 
 // MongoDB Connection
@@ -58,3 +58,7 @@ io.on('connection', (socket) => {
 // Start server
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+app.get('/', (req, res) => {
+  res.json({ message: "Server is running!" });
+});

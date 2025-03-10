@@ -4,6 +4,12 @@ const { authMiddleware } = require('../middleware/auth'); // JWT authentication 
 const upload = require('../middleware/upload'); // Multer for file uploads
 const router = express.Router();
 
+
+router.get('/test', (req, res) => {
+  res.json({ message: "Grievances API is working!" });
+});
+
+
 // POST /api/grievance - Create a new grievance
 router.post('/', authMiddleware, upload.single('file'), async (req, res) => {
   try {
