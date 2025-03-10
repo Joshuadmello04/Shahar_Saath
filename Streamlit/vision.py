@@ -18,6 +18,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+def home():
+    return {"message": "FastAPI is working!"}
+
 # Initialize BLIP models
 blip_processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
 blip_model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base")
