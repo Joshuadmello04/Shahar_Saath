@@ -118,7 +118,7 @@ export default function Home() {
 
     try {
       const response = await axios.post(
-        "http://172.20.10.14:8000/generate",
+        env.EXPO_PUBLIC_API_URL|| "http://172.20.10.8:8000/generate",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -144,7 +144,7 @@ export default function Home() {
   const submitGrievance = async (grievanceType, caption) => {
     try {
       const token = await AsyncStorage.getItem("token");
-      const apiUrl = process.env.EXPO_PUBLIC_API_URL || "http://172.20.10.14:5000";
+      const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
       const formData = new FormData();
       formData.append("file", {
@@ -158,7 +158,7 @@ export default function Home() {
       formData.append("latitude", location?.latitude || "Unknown");
       formData.append("longitude", location?.longitude || "Unknown");
 
-      const response = await axios.post(`${apiUrl}/api/grievances`, formData, {
+      const response = await axios.post(`${apiUrl}/api/grievance`, formData, {
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" },
       });
 

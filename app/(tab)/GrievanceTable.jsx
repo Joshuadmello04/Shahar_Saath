@@ -51,10 +51,10 @@ const GrievanceTable = () => {
 
   const fetchGrievances = async () => {
     const token = await AsyncStorage.getItem('token');
-    const apiUrl = process.env.EXPO_PUBLIC_API_URL || 'http://172.20.10.14:5000';
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL || 'http://172.20.10.8:5000';
 
     try {
-      const response = await axios.get(`${apiUrl}/api/grievances`, {
+      const response = await axios.get(`${apiUrl}/api/grievance`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -95,7 +95,7 @@ const GrievanceTable = () => {
     getLocation();
   }, []);
 
-  console.log("Grievances state:", grievances);
+  //console.log("Grievances state:", grievances);
   console.log("User's Location:", location);
 
   return (
@@ -124,11 +124,7 @@ const GrievanceTable = () => {
             className="flex-1"
             contentContainerStyle={{ flexGrow: 1 }}
           >
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={true}
-              className="rounded-xl shadow-[8px_8px_16px_rgba(0,0,0,0.3),-8px_-8px_16px_rgba(30,64,110,0.2)]"
-            >
+            <View className="rounded-xl shadow-[8px_8px_16px_rgba(0,0,0,0.3),-8px_-8px_16px_rgba(30,64,110,0.2)]">
               <View className="overflow-hidden rounded-xl bg-[#0D2139]">
                 <View className="flex-row p-4 bg-[#11294A] border-b border-[#1E406E]">
                   <StyledText className="flex-1 pr-4 font-bold text-center text-[#60A5FA] min-w-[150px]">Title</StyledText>
@@ -138,57 +134,62 @@ const GrievanceTable = () => {
                 </View>
 
                 <ScrollView
-                  className="max-h-[500px]"
-                  showsVerticalScrollIndicator={true}
+                  horizontal
+                  showsHorizontalScrollIndicator={true}
                 >
-                  {grievances.map((item) => {
-                    const apiUrl = process.env.EXPO_PUBLIC_API_URL || 'http://172.20.10.14:5000';
-                    const imageUrl = `${apiUrl}${item.file}`;
+                  <ScrollView
+                    style={{ maxHeight: height * 0.6 }}
+                    showsVerticalScrollIndicator={true}
+                  >
+                    {grievances.map((item) => {
+                      const apiUrl = process.env.EXPO_PUBLIC_API_URL || 'http://172.20.10.8:5000';
+                      const imageUrl = `${apiUrl}${item.file}`;
 
-                    return (
-                      <View
-                        key={item._id}
-                        className="flex-row p-4 bg-[#0D2139] border-b border-[#1E406E]"
-                        style={{
-                          shadowColor: '#000',
-                          shadowOffset: { width: 1, height: 1 },
-                          shadowOpacity: 0.2,
-                          shadowRadius: 2,
-                        }}
-                      >
-                        <Text className="flex-1 pr-4 text-center text-[#9BB6DE] border-r border-[#1E406E] min-w-[150px]">
-                          {item.title}
-                        </Text>
-                        <Text className="flex-wrap px-4 text-justify text-[#9BB6DE] border-r border-[#1E406E] min-w-[300px] flex-2">
-                          {item.description}
-                        </Text>
-                        <View className="flex-1 items-center border-r border-[#1E406E] min-w-[120px]">
-                          <View className="p-1 bg-[#0D2139] rounded-xl shadow-[4px_4px_8px_rgba(0,0,0,0.3),-4px_-4px_8px_rgba(30,64,110,0.2)]">
-                            <Image
-                              source={{ uri: imageUrl }}
-                              style={{
-                                width: 100,
-                                height: 100,
-                                borderRadius: 10,
-                              }}
-                              resizeMode="cover"
-                            />
-                          </View>
-                        </View>
-                        <Animated.View
-                          style={{ opacity: fadeAnim }}
-                          className="flex-1 min-w-[150px]"
+                      return (
+                        <View
+                          key={item._id}
+                          className="flex-row p-4 bg-[#0D2139] border-b border-[#1E406E]"
+                          style={{
+                            shadowColor: '#000',
+                            shadowOffset: { width: 1, height: 1 },
+                            shadowOpacity: 0.2,
+                            shadowRadius: 2,
+                          }}
                         >
-                          <Text className="pr-4 text-center text-[#9BB6DE]">
-                            📍{item.latitude},{item.longitude}
+                          <Text className="flex-1 pr-4 text-center text-[#9BB6DE] border-r border-[#1E406E] min-w-[150px]">
+                            {item.title}
                           </Text>
-                        </Animated.View>
-                      </View>
-                    );
-                  })}
+                          <Text className="flex-wrap px-4 text-justify text-[#9BB6DE] border-r border-[#1E406E] min-w-[300px] flex-2">
+                            {item.description}
+                          </Text>
+                          <View className="flex-1 items-center border-r border-[#1E406E] min-w-[120px]">
+                            <View className="p-1 bg-[#0D2139] rounded-xl shadow-[4px_4px_8px_rgba(0,0,0,0.3),-4px_-4px_8px_rgba(30,64,110,0.2)]">
+                              <Image
+                                source={{ uri: imageUrl }}
+                                style={{
+                                  width: 100,
+                                  height: 100,
+                                  borderRadius: 10,
+                                }}
+                                resizeMode="cover"
+                              />
+                            </View>
+                          </View>
+                          <Animated.View
+                            style={{ opacity: fadeAnim }}
+                            className="flex-1 min-w-[150px]"
+                          >
+                            <Text className="pr-4 text-center text-[#9BB6DE]">
+                              📍{item.latitude},{item.longitude}
+                            </Text>
+                          </Animated.View>
+                        </View>
+                      );
+                    })}
+                  </ScrollView>
                 </ScrollView>
               </View>
-            </ScrollView>
+            </View>
           </ScrollView>
         )}
 

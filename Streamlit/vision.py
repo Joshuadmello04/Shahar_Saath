@@ -34,7 +34,7 @@ resnet50_model.fc = torch.nn.Linear(resnet50_model.fc.in_features, num_classes) 
 # Load the custom trained weights for ResNet50
 try:
     # Load the model weights (ensure the correct path and device mapping)
-    resnet50_model.load_state_dict(torch.load("slum_issue_classifier_resnet50.pth", map_location=torch.device("cpu")))
+    resnet50_model.load_state_dict(torch.load("final_model.pth", map_location=torch.device("cpu")))
     resnet50_model.eval()  # Set the model to evaluation mode
     print("Model Final Layer loaded successfully.")
 except FileNotFoundError:
@@ -90,4 +90,3 @@ async def generate_caption_and_classify(file: UploadFile = File(...)):
     caption = generate_caption(image)
 
     return {"grievance_type": grievance_type, "caption": caption} #api content..custom made
-

@@ -55,7 +55,7 @@ export default function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       const token = await AsyncStorage.getItem("token");
-      const apiUrl = process.env.EXPO_PUBLIC_API_URL || "http://172.20.10.14:5000";
+      const apiUrl = process.env.EXPO_PUBLIC_API_URL || "http://172.20.10.8:5000";
       try {
         const response = await fetch(`${apiUrl}/api/profile`, {
           headers: {
@@ -107,7 +107,7 @@ export default function Profile() {
 
   const updateProfileImage = async (uri) => {
     const token = await AsyncStorage.getItem("token");
-    const apiUrl = process.env.EXPO_PUBLIC_API_URL || "http://172.20.10.14:5000";
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL || "http://172.20.10.8:5000";
 
     const formData = new FormData();
     formData.append("profileImage", {

@@ -25,7 +25,7 @@ const LoginForm = () => {
       Alert.alert("Error", "Please fill in all fields.");
       return;
     }
-    const apiUrl = process.env.EXPO_PUBLIC_API_URL || "http://172.20.10.14:5000";
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL || "http://172.20.10.8:5000";
     try {
       const response = await fetch(`${apiUrl}/api/auth/login`, {
         method: 'POST',
@@ -52,12 +52,12 @@ const LoginForm = () => {
   };
 
   return (
-    <StyledView className='flex-1 justify-center items-center'>
+    <StyledView className='items-center justify-center flex-1'>
       <StyledView className="w-[100] h-[100] rounded-full items-center justify-center mb-5">
         <StyledImage className='w-[310] h-[310]' source={require('./assets/images/mainlogo.png')} />
       </StyledView>
       <StyledInput 
-        className='mb-5 text-black bg-white w-60 h-8' 
+        className='h-8 mb-5 text-black bg-white w-60' 
         mode='outlined' 
         label='Email' 
         placeholder="Enter Email" 
@@ -67,7 +67,7 @@ const LoginForm = () => {
         onChangeText={setEmail} // Update name state
       />
       <StyledInput 
-        className='mb-5 text-black bg-white w-60 h-8' 
+        className='h-8 mb-5 text-black bg-white w-60' 
         mode='outlined' 
         label='Password' 
         secureTextEntry={!showPassword}
@@ -94,7 +94,7 @@ const LoginForm = () => {
         New User? <StyledText className='font-black text-cyan-300'>Sign Up</StyledText>
       </StyledButton>
       <StyledButton 
-        className='w-40 h-11 mt-5' 
+        className='w-40 mt-5 h-11' 
         mode='elevated' 
         buttonColor='#0891b2' 
         textColor='#ffff' 

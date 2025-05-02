@@ -20,7 +20,7 @@ const decodeJWT = (token) => {
   return JSON.parse(jsonPayload);
 };
 
-const apiUrl = process.env.EXPO_PUBLIC_API_URL || 'http://172.20.10.14:5000';
+const apiUrl = process.env.EXPO_PUBLIC_API_URL || 'http://172.20.10.8:5000';
 
 export default function Chat() {
   const [message, setMessage] = useState('');

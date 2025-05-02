@@ -31,7 +31,7 @@ const SignupForm = () => {
       Alert.alert("Error", "Passwords do not match");
       return;
     }
-    const apiUrl = process.env.EXPO_PUBLIC_API_URL || "http://172.20.10.14:5000";
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL || "http://172.20.10.8:5000";
     // Send data to the backend
     try {
       const response = await fetch(`${apiUrl}/api/auth/signup`, {
@@ -65,9 +65,9 @@ const SignupForm = () => {
   };
 
   return (
-    <StyledView className="flex-col p-4 items-center">
+    <StyledView className="flex-col items-center p-4">
       <StyledInput 
-        className="mb-5 text-black w-60 h-8" 
+        className="h-8 mb-5 text-black w-60" 
         mode="outlined" 
         label="Name" 
         placeholder="Enter Name" 
@@ -77,7 +77,7 @@ const SignupForm = () => {
         onChangeText={setName} // Update name state
       />
       <StyledInput 
-        className="mb-5 text-black bg-white w-60 h-8" 
+        className="h-8 mb-5 text-black bg-white w-60" 
         mode="outlined" 
         label="Email" 
         placeholder="Enter Email" 
@@ -87,7 +87,7 @@ const SignupForm = () => {
         onChangeText={setEmail} // Update email state
       />
       <StyledInput 
-        className="mb-5 text-black bg-white w-60 h-8" 
+        className="h-8 mb-5 text-black bg-white w-60" 
         mode="outlined" 
         label="Phone Number" 
         keyboardType='phone-pad' 
@@ -98,7 +98,7 @@ const SignupForm = () => {
         onChangeText={setPhone} // Update phone state
       />
       <StyledInput 
-        className="mb-5 text-black bg-white w-60 h-8" 
+        className="h-8 mb-5 text-black bg-white w-60" 
         mode="outlined" 
         label="Password" 
         secureTextEntry={!showPassword} // Toggle secureTextEntry based on showPassword
@@ -116,7 +116,7 @@ const SignupForm = () => {
         } 
       />
       <StyledInput 
-        className="mb-5 text-black bg-white w-60 h-8" 
+        className="h-8 mb-5 text-black bg-white w-60" 
         mode="outlined" 
         label="Confirm Password" 
         secureTextEntry={!showConfirmPassword} // Toggle secureTextEntry based on showConfirmPassword
@@ -143,7 +143,7 @@ const SignupForm = () => {
         Already have an account? <StyledText className="font-black text-cyan-300">Login</StyledText>
       </StyledButton>
       <StyledButton 
-        className="w-40 h-15 mt-5" 
+        className="w-40 mt-5 h-15" 
         mode="elevated" 
         buttonColor='#0891b2' 
         textColor="#ffff" 
